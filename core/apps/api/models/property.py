@@ -1,14 +1,26 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_core.models import AbstractBaseModel
+from core.apps.api.enums.property import DealTypeChoice
+
+
+
 
 
 class PropertyModel(AbstractBaseModel):
-
     name = models.CharField(verbose_name=_("name"), max_length=255)
+    dealtype = models.CharField(
+        verbose_name=_("Bitim turi"),
+        max_length=100,
+        choices=DealTypeChoice.choices,
+        default=DealTypeChoice.RENT,
+        blank=True, null=True
+    )
+    
+    
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.name)
 
     @classmethod
     def _create_fake(self):
