@@ -1,0 +1,28 @@
+{
+ "template": "https://github.com/JscorpTech/django",
+ "commit": "d63186d213820576943fca495d181e828f2eef07",
+ "checkout": null,
+ "context": {
+  "cookiecutter": {
+   "cacheops": true,
+   "silk": true,
+   "storage": true,
+   "rosetta": true,
+   "channels": true,
+   "ckeditor": true,
+   "modeltranslation": true,
+   "parler": true,
+   "project_name": "UyTop",
+   "settings_module": "config.settings.local",
+   "runner": "wsgi",
+   "script": "entrypoint.sh",
+   "key": "key",
+   "port": "8022",
+   "phone": "998888112309",
+   "password": "2309",
+   "max_line_length": "120",
+   "project_slug": "uytop"
+  }
+ },
+ "directory": null
+}

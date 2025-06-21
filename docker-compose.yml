@@ -1,0 +1,55 @@
+networks:
+  uytop:
+    driver: bridge
+
+volumes:
+  pg_data: null
+  rabbitmq: null
+  pycache: null
+
+services:
+  nginx:
+    networks:
+      - uytop
+    ports:
+      - ${PORT:-8001}:80
+    volumes:
+      - ./resources/layout/nginx.conf:/etc/nginx/nginx.conf
+      - ./resources/:/usr/share/nginx/html/resources/
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.nginx
+    depends_on:
+      - web
+  web:
+    networks:
+      - uytop
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.web
+    restart: always
+    command: ${COMMAND:-sh ./entrypoint.sh}
+    environment:
+      - PYTHONPYCACHEPREFIX=/var/cache/pycache
+    volumes:
+      - .:/code
+      - pycache:/var/cache/pycache
+    depends_on:
+      - db
+      - redis
+  db:
+    networks:
+      - uytop
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: django
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '2309'
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  redis:
+    networks:
+      - uytop
+    restart: always
+    image: redis
