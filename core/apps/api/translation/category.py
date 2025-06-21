@@ -5,4 +5,6 @@ from core.apps.api.models import CategoryModel
 
 @register(CategoryModel)
 class CategoryTranslation(TranslationOptions):
-    fields = []
+    fields = [
+        "name"
+    ]
