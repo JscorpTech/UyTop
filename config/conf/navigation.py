@@ -38,6 +38,11 @@ PAGES = [
                 "link": reverse_lazy("admin:api_categorymodel_changelist"),
             },
             {
+                "title": _("Uy elonlari"),
+                "icon": "home_work",
+                "link": reverse_lazy("admin:api_propertymodel_changelist"),
+            },
+            {
                 "title": _("Tuman"),
                 "icon": "location_city",
                 "link": reverse_lazy("admin:api_districtmodel_changelist"),
