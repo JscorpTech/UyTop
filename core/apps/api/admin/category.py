@@ -8,5 +8,8 @@ from core.apps.api.models import CategoryModel
 class CategoryAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = (
         "id",
-        "__str__",
+        "name",
     )
+    
+    list_display_links = ("name"),
+    

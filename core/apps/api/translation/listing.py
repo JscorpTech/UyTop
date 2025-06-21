@@ -5,9 +5,11 @@ from core.apps.api.models import ListingModel, ListingsubtypeModel
 
 @register(ListingModel)
 class ListingTranslation(TranslationOptions):
-    fields = []
+    fields = [
+        "name"
+    ]
 
 
 @register(ListingsubtypeModel)
 class ListingsubtypeTranslation(TranslationOptions):
-    fields = []
+    fields = ["name"]

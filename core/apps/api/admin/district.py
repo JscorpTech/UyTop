@@ -8,5 +8,7 @@ from core.apps.api.models import DistrictModel
 class DistrictAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = (
         "id",
-        "__str__",
+        "name",
     )
+    list_display_links = ("name"),
+    
