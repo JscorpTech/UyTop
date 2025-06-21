@@ -7,7 +7,7 @@ class ListingModel(AbstractBaseModel):
     name = models.CharField(verbose_name=_("name"), max_length=255)
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.name)
 
     @classmethod
     def _create_fake(self):
@@ -23,10 +23,11 @@ class ListingModel(AbstractBaseModel):
 
 class ListingsubtypeModel(AbstractBaseModel):
     name = models.CharField(verbose_name=_("name"), max_length=255)
+    type = models.ForeignKey(ListingModel, on_delete=models.CASCADE, verbose_name=_("Turi"))
 
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.name)
 
     @classmethod
     def _create_fake(self):

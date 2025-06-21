@@ -29,7 +29,7 @@ PAGES = [
         ],
     },
     {
-        "title": _("Uy bo'yicha bo'limlar"),
+        "title": _("Kategorya va Tumanlar "),
         "separator": True,  
         "items": [
             {
@@ -38,14 +38,30 @@ PAGES = [
                 "link": reverse_lazy("admin:api_categorymodel_changelist"),
             },
             {
+                "title": _("Tuman"),
+                "icon": "location_city",
+                "link": reverse_lazy("admin:api_districtmodel_changelist"),
+            },
+        ],
+    },
+    {
+        "title": _("Uy bo'yicha bo'limlar"),
+        "separator": True,  
+        "items": [
+            {
                 "title": _("Uy elonlari"),
                 "icon": "home_work",
                 "link": reverse_lazy("admin:api_propertymodel_changelist"),
             },
             {
-                "title": _("Tuman"),
-                "icon": "location_city",
-                "link": reverse_lazy("admin:api_districtmodel_changelist"),
+                "title": _("E'lon turi"),
+                "icon": "style",
+                "link": reverse_lazy("admin:api_listingmodel_changelist"),
+            },
+            {
+                "title": _("E'lon osti turlari"),
+                "icon": "layers",
+                "link": reverse_lazy("admin:api_listingsubtypemodel_changelist"),
             },
         ],
     },
