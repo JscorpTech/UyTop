@@ -21,6 +21,8 @@ class PropertyModel(AbstractBaseModel):
         verbose_name_plural = _("PropertyModel")
 
 
+
+
 class PropertysubtypeModel(AbstractBaseModel):
     name = models.CharField(verbose_name=_("name"), max_length=255)
     type = models.ForeignKey(PropertyModel, on_delete=models.CASCADE, verbose_name=_("Turi"))

@@ -6,7 +6,7 @@ from core.apps.api.models import PropertyModel, PropertysubtypeModel
 
 
 @admin.register(PropertyModel)
-class PropertyAdmin(ModelAdmin):
+class PropertyAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display = (
         "id",
         "name",
