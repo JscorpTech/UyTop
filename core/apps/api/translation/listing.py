@@ -1,6 +1,6 @@
 from modeltranslation.translator import TranslationOptions, register
 
-from core.apps.api.models import ListingModel, ListingsubtypeModel
+from core.apps.api.models import ListingModel
 
 
 @register(ListingModel)
@@ -9,7 +9,3 @@ class ListingTranslation(TranslationOptions):
         "name"
     ]
 
-
-@register(ListingsubtypeModel)
-class ListingsubtypeTranslation(TranslationOptions):
-    fields = ["name"]

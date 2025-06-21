@@ -3,14 +3,11 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from core.apps.api.models import ListingModel, ListingsubtypeModel
+from core.apps.api.models import ListingModel
 from core.apps.api.serializers.listing import (
     CreateListingSerializer,
-    CreateListingsubtypeSerializer,
     ListListingSerializer,
-    ListListingsubtypeSerializer,
     RetrieveListingSerializer,
-    RetrieveListingsubtypeSerializer,
 )
 
 
@@ -27,16 +24,3 @@ class ListingView(BaseViewSetMixin, ReadOnlyModelViewSet):
         "create": CreateListingSerializer,
     }
 
-
-@extend_schema(tags=["listingSubType"])
-class ListingsubtypeView(BaseViewSetMixin, ReadOnlyModelViewSet):
-    queryset = ListingsubtypeModel.objects.all()
-    serializer_class = ListListingsubtypeSerializer
-    permission_classes = [AllowAny]
-
-    action_permission_classes = {}
-    action_serializer_class = {
-        "list": ListListingsubtypeSerializer,
-        "retrieve": RetrieveListingsubtypeSerializer,
-        "create": CreateListingsubtypeSerializer,
-    }
