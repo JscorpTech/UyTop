@@ -13,18 +13,34 @@ PAGES = [
         ],
     },
     {
-        "title": _("Auth"),
-        "separator": True,  # Top border
+        "title": _("Foydalanuvchilar"),
+        "separator": True,  
         "items": [
             {
                 "title": _("Users"),
-                "icon": "group",
+                "icon": "person",
                 "link": reverse_lazy("admin:accounts_user_changelist"),
             },
             {
                 "title": _("Group"),
                 "icon": "group",
                 "link": reverse_lazy("admin:auth_group_changelist"),
+            },
+        ],
+    },
+    {
+        "title": _("Uy bo'yicha bo'limlar"),
+        "separator": True,  
+        "items": [
+            {
+                "title": _("Kategoryalar"),
+                "icon": "category",
+                "link": reverse_lazy("admin:api_categorymodel_changelist"),
+            },
+            {
+                "title": _("Tuman"),
+                "icon": "location_city",
+                "link": reverse_lazy("admin:api_districtmodel_changelist"),
             },
         ],
     },

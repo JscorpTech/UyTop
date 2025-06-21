@@ -3,11 +3,12 @@ from django.utils.translation import gettext_lazy as _
 from django_core.models import AbstractBaseModel
 
 
-class DistrictModel(AbstractBaseModel):
+class PropertyModel(AbstractBaseModel):
+
     name = models.CharField(verbose_name=_("name"), max_length=255)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.pk)
 
     @classmethod
     def _create_fake(self):
@@ -16,6 +17,6 @@ class DistrictModel(AbstractBaseModel):
         )
 
     class Meta:
-        db_table = "District"
-        verbose_name = _("DistrictModel")
-        verbose_name_plural = _("DistrictModels")
+        db_table = "Property"
+        verbose_name = _("PropertyModel")
+        verbose_name_plural = _("PropertyModels")
