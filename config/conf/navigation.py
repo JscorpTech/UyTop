@@ -63,6 +63,11 @@ PAGES = [
                 "icon": "layers",
                 "link": reverse_lazy("admin:api_propertysubtypemodel_changelist"),
             },
+            {
+                "title": _("Qulayliklar"),
+                "icon": "weekend",
+                "link": reverse_lazy("admin:api_amenitymodel_changelist"),
+            },
         ],
     },
 ]
