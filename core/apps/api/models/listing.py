@@ -12,7 +12,6 @@ from core.apps.api.enums.listing import (
 
 class ListingModel(AbstractBaseModel):
     name = models.CharField(verbose_name=_("Nomi"), max_length=255)
-    
     dealtype = models.CharField(
         verbose_name=_("Bitim Turi"),
         max_length=100,
@@ -61,13 +60,12 @@ class ListingModel(AbstractBaseModel):
         default=CurrencyChoice.UZS
     )
     description = models.TextField(verbose_name=_("Ochiqlama"), blank=True, null=True)
-    amenity = models.ForeignKey(
+    amenity = models.ManyToManyField(
         "api.AmenityModel",
-        on_delete=models.CASCADE,
         verbose_name=_("Quylaylik"),
         blank=True, null=True
     )
-
+    phone = models.CharField(verbose_name=_("Telefon"), max_length=50, blank=True, null=True)
 
 
 

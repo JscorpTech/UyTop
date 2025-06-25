@@ -12,7 +12,7 @@ class BasePropertysubtypeSerializer(serializers.ModelSerializer):
         ]
 
 
-class ListPropertysubtypeSerializer(BaseListingsubtypeSerializer):
+class ListPropertysubtypeSerializer(BasePropertysubtypeSerializer):
     class Meta(BasePropertysubtypeSerializer.Meta): ...
 
 

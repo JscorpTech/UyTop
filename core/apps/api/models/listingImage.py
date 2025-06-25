@@ -3,12 +3,19 @@ from django.utils.translation import gettext_lazy as _
 from django_core.models import AbstractBaseModel
 
 
-class ListingimageModel(AbstractBaseModel):
 
-    name = models.CharField(verbose_name=_("name"), max_length=255)
+class ListingimageModel(AbstractBaseModel):
+    listing = models.ForeignKey(
+        "api.ListingModel",
+        on_delete=models.CASCADE,
+        verbose_name=_("Uy elonlari"),
+        blank=True, null=True
+    )
+    image = models.ImageField(verbose_name=_("Rasmlar"), upload_to="listing/", blank=True, null=True)
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.listing.name)
+
 
     @classmethod
     def _create_fake(self):

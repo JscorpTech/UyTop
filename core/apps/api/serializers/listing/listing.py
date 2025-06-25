@@ -9,6 +9,23 @@ class BaseListingSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "dealtype",
+            "property",
+            "latitude",
+            "longitude",
+            "room_count",
+            "area",
+            "floor",
+            "total_floors",
+            "repair_type",
+            "building",
+            "price_type",
+            "price",
+            "currency",
+            "description",
+            "amenity",
+            "phone"
+            
         ]
 
 
@@ -25,4 +42,20 @@ class CreateListingSerializer(BaseListingSerializer):
         fields = [
             "id",
             "name",
+            "dealtype",
+            "property",
+            "latitude",
+            "longitude",
+            "room_count",
+            "area",
+            "floor",
+            "total_floors",
+            "repair_type",
+            "building",
+            "price_type",
+            "price",
+            "currency",
+            "description",
+            "amenity",
+            "phone"
         ]
