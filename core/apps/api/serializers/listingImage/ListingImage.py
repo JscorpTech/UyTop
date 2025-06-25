@@ -8,7 +8,8 @@ class BaseListingimageSerializer(serializers.ModelSerializer):
         model = ListingimageModel
         fields = [
             "id",
-            "name",
+            "listing",
+            "image"
         ]
 
 
@@ -24,5 +25,6 @@ class CreateListingimageSerializer(BaseListingimageSerializer):
     class Meta(BaseListingimageSerializer.Meta):
         fields = [
             "id",
-            "name",
+            "listing",
+            "image"
         ]

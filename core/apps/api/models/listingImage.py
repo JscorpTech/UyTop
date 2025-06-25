@@ -9,6 +9,7 @@ class ListingimageModel(AbstractBaseModel):
         "api.ListingModel",
         on_delete=models.CASCADE,
         verbose_name=_("Uy elonlari"),
+        related_name="images",
         blank=True, null=True
     )
     image = models.ImageField(verbose_name=_("Rasmlar"), upload_to="listing/", blank=True, null=True)
