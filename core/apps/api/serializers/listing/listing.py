@@ -15,6 +15,40 @@ class BaseListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
     
     class Meta:
         model = ListingModel
+        fields = [  
+            "id",
+            "images",
+            "price",
+            "price_type",
+            "currency",
+            "room_count",
+            "total_floors",
+            "description"
+        ]
+
+    def get_property(self, obj):
+        return LS.get_property(obj)
+        
+    def get_images(self, obj):
+        request = self.context.get("request")
+        return LS.get_images(obj, request)
+    
+    def get_amenity(self, obj):
+        return LS.get_amenity(obj)
+
+
+class ListListingSerializer(BaseListingSerializer):
+    class Meta(BaseListingSerializer.Meta): ...
+
+
+
+class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
+    property = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
+    amenity = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ListingModel
         fields = [
             "id",
             "name",
@@ -46,14 +80,7 @@ class BaseListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
     
     def get_amenity(self, obj):
         return LS.get_amenity(obj)
-    
 
-class ListListingSerializer(BaseListingSerializer):
-    class Meta(BaseListingSerializer.Meta): ...
-
-
-class RetrieveListingSerializer(BaseListingSerializer):
-    class Meta(BaseListingSerializer.Meta): ...
 
 
 class CreateListingSerializer(serializers.ModelSerializer):
