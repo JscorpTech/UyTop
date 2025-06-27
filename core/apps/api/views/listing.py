@@ -23,4 +23,9 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         "retrieve": RetrieveListingSerializer,
         "create": CreateListingSerializer,
     }
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
 

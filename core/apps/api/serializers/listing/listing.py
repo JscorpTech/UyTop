@@ -3,8 +3,12 @@ from rest_framework import serializers
 from core.apps.api.models import ListingModel, ListingimageModel, AmenityModel
 from core.apps.api.serializers.listingImage import BaseListingimageSerializer
 from ...enums.Services import ListingServices as LS
+from .currency import CurrencyPriceMixin
 
-class BaseListingSerializer(serializers.ModelSerializer):
+
+
+
+class BaseListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
     property = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     amenity = serializers.SerializerMethodField()
@@ -75,7 +79,8 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "repair_type",
             "building",
             "price_type",
-            "price",
+            "price_uzs",
+            "price_shb",
             "currency",
             "description",
             "amenity",

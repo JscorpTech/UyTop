@@ -52,7 +52,9 @@ class ListingModel(AbstractBaseModel):
         choices=PriceTypeChoice.choices,
         default=PriceTypeChoice.TOTAL
     )
-    price = models.DecimalField(max_digits=15, decimal_places=2)
+    price_uzs = models.DecimalField(_("Narx (UZS)"), max_digits=15, decimal_places=2)
+    price_shb = models.DecimalField(_("Narx (Sh.B.)"), max_digits=15, decimal_places=2)
+    
     currency = models.CharField(
         verbose_name=_("Valyuta Turi"),
         choices=CurrencyChoice.choices,
