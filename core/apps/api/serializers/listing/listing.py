@@ -10,7 +10,6 @@ class BaseListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
     building = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     amenity = serializers.SerializerMethodField()
-    
 
     class Meta:
         model = ListingModel
@@ -53,11 +52,7 @@ class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer)
             "name",
             "dealtype",
             "property",
-            "apartment_type",
-            "house_type",
-            "business_type",
-            "land_type",
-            "residential_complex",
+            "property_subtype",
             "latitude",
             "longitude",
             "address",
@@ -112,11 +107,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "name",
             "dealtype",
             "property",
-            "apartment_type",
-            "house_type",
-            "business_type",
-            "land_type",
-            "residential_complex",
+            "property_subtype",
             "latitude",
             "longitude",
             "address",
