@@ -6,7 +6,8 @@ from core.apps.api.views import (
     CategoryView,
     AmenityView,
     PropertyView,
-    PropertysubtypeView
+    PropertysubtypeView,
+    BuildingmaterialView
 )
 
 
@@ -18,6 +19,7 @@ router.register(r"category", CategoryView, basename="category")
 router.register(r"amenity", AmenityView, basename="amenity")
 router.register(r"property", PropertyView, basename="property")
 router.register(r"property-subtype", PropertysubtypeView, basename="propertysubtype")
+router.register(r"building-material", BuildingmaterialView, basename="building-material")
 
 
 

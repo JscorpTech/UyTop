@@ -5,7 +5,6 @@ from ..serializers.amenity import BaseAmenitySerializer
 
 
 class ListingServices:
-    
     @staticmethod
     def get_building(building_obj):
         return BaseBuildingmaterialSerializer(building_obj.building).data if building_obj else None
