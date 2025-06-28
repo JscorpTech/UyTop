@@ -5,3 +5,4 @@ from .test_district import *  # noqa
 from .test_listing import *  # noqa
 from .test_listingImage import *  # noqa
 from .test_property import *  # noqa
+from .test_residential import *  # noqa

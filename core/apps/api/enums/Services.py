@@ -1,6 +1,7 @@
 from ..serializers.buildingMaterial import BaseBuildingmaterialSerializer
 from ..serializers.listingImage import BaseListingimageSerializer
 from ..serializers.amenity import BaseAmenitySerializer
+from ..serializers.residential import BaseResidentialcomplexSerializer
 
 
 
@@ -25,3 +26,7 @@ class ListingServices:
             amenity_obj.amenity,
             many=True
         ).data
+        
+    @staticmethod
+    def get_residential_complex(residential_complex_obj):
+        return BaseResidentialcomplexSerializer(residential_complex_obj.residential_complex).data 

@@ -6,10 +6,14 @@ from ...enums.Services import ListingServices as LS
 from .currency import CurrencyPriceMixin
 
 
-class BaseListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
+
+
+
+class BaseListingSerializer(serializers.ModelSerializer):
     building = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     amenity = serializers.SerializerMethodField()
+    residential_complex = serializers.SerializerMethodField()
 
     class Meta:
         model = ListingModel
@@ -18,10 +22,10 @@ class BaseListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
             "images",
             "price",
             "price_type",
-            "currency",
             "room_count",
             "total_floors",
-            "description"
+            "description",
+            "residential_complex"
         ]
 
     def get_building(self, obj):
@@ -30,6 +34,11 @@ class BaseListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
     def get_images(self, obj):
         request = self.context.get("request")
         return LS.get_images(obj, request)
+    
+    
+    def get_residential_complex(self, obj):
+        return LS.get_residential_complex(obj)
+
 
     def get_amenity(self, obj):
         return LS.get_amenity(obj)
@@ -44,6 +53,8 @@ class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer)
     building = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     amenity = serializers.SerializerMethodField()
+    residential_complex = serializers.SerializerMethodField()
+    
 
     class Meta:
         model = ListingModel
@@ -71,12 +82,11 @@ class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer)
             "repair_type",
             "building",
             "price_type",
-            "price_uzs",
-            "price_shb",
-            "currency",
+            "price",
             "negotiable",
             "description",
             "phone",
+            "residential_complex",
             "images",
             "amenity"
         ]
@@ -87,6 +97,9 @@ class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer)
     def get_images(self, obj):
         request = self.context.get("request")
         return LS.get_images(obj, request)
+
+    def get_residential_complex(self, obj):
+        return LS.get_residential_complex(obj)
 
     def get_amenity(self, obj):
         return LS.get_amenity(obj)
@@ -126,11 +139,10 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "repair_type",
             "building",
             "price_type",
-            "price_uzs",
-            "price_shb",
-            "currency",
+            "price",
             "negotiable",
             "description",
+            "residential_complex",
             "phone",
             "amenity",
             "images"

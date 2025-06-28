@@ -20,6 +20,12 @@ class ListingModel(AbstractBaseModel):
         blank=True,
         null=True
     )
+    residential_complex = models.ForeignKey(
+        "api.ResidentialcomplexModel",
+        on_delete=models.CASCADE,
+        verbose_name=_("Complex"),
+        blank=True, null=True
+    )
 
     property = models.CharField(
         _("Mulk Turi"),
@@ -81,15 +87,7 @@ class ListingModel(AbstractBaseModel):
         default=PriceTypeChoice.TOTAL
     )
 
-    price_uzs = models.DecimalField(_("Narx (UZS)"), max_digits=15, decimal_places=2)
-    price_shb = models.DecimalField(_("Narx (Sh.B.)"), max_digits=15, decimal_places=2)
-
-    currency = models.CharField(
-        _("Valyuta Turi"),
-        max_length=10,
-        choices=CurrencyChoice.choices,
-        default=CurrencyChoice.UZS
-    )
+    price = models.CharField(_("Narx"), max_length=200, blank=True, null=True)
 
     negotiable = models.BooleanField(_("Kelishiladi"), default=False)
 

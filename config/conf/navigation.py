@@ -58,11 +58,11 @@ PAGES = [
                 "icon": "construction",
                 "link": reverse_lazy("admin:api_buildingmaterialmodel_changelist"),
             },
-            # {
-            #     "title": _("E'lon osti turlari"),
-            #     "icon": "layers",
-            #     "link": reverse_lazy("admin:api_propertysubtypemodel_changelist"),
-            # },
+            {
+                "title": _("Turar joy majmuasi"),
+                "icon": "layers",
+            "link": reverse_lazy("admin:api_residentialcomplexmodel_changelist"),
+            },
             {
                 "title": _("Qulayliklar"),
                 "icon": "weekend",
