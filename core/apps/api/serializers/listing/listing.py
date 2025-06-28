@@ -42,7 +42,7 @@ class ListListingSerializer(BaseListingSerializer):
 
 
 class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
-    property = serializers.SerializerMethodField()
+    building = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     amenity = serializers.SerializerMethodField()
 
@@ -87,8 +87,8 @@ class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer)
             "amenity"
         ]
 
-    def get_property(self, obj):
-        return LS.get_property(obj)
+    def get_building(self, obj):
+        return LS.get_building(obj)
 
     def get_images(self, obj):
         request = self.context.get("request")
