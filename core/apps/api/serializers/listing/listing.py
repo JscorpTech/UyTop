@@ -25,6 +25,7 @@ class BaseListingSerializer(serializers.ModelSerializer):
             "room_count",
             "total_floors",
             "description",
+            "currency",
             "residential_complex"
         ]
 
@@ -85,6 +86,7 @@ class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer)
             "negotiable",
             "description",
             "phone",
+            "currency",
             "residential_complex",
             "images",
             "amenity"
@@ -144,6 +146,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "description",
             "residential_complex",
             "phone",
+            "currency",
             "amenity",
             "images"
         ]
