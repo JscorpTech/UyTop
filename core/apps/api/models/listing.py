@@ -15,7 +15,6 @@ class ListingModel(AbstractBaseModel):
     name = models.CharField(_("Nomi"), max_length=255)
     dealtype = models.CharField(_("Bitim Turi"), max_length=100, choices=DealTypeChoice.choices, default=DealTypeChoice.RENT, blank=True, null=True)
     property = models.CharField(_("Mulk Turi"), max_length=200, blank=True, null=True)
-    property_subtype = models.CharField(_("Turi"), max_length=200, blank=True, null=True)
 
     # === Turar joy turlari ===
     apartment_type = models.CharField(_("Kvartira turi"), max_length=100, blank=True, null=True)
