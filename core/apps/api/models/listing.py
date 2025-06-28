@@ -52,7 +52,6 @@ class ListingModel(AbstractBaseModel):
     floors_count = models.PositiveSmallIntegerField(_("Qavatlar soni"), blank=True, null=True)
 
     # === Maydonlar ===
-    area = models.CharField(_("kv.metr"), max_length=200)
     apartment_area = models.FloatField(_("Kvartira maydoni"), blank=True, null=True)
     house_area = models.FloatField(_("Uy maydoni"), blank=True, null=True)
     land_area = models.FloatField(_("Yer maydoni"), blank=True, null=True)
@@ -88,7 +87,7 @@ class ListingModel(AbstractBaseModel):
     )
 
     price = models.CharField(_("Narx"), max_length=200, blank=True, null=True)
-
+    currency = models.CharField(_("Valyuta"), max_length=100, choices=CurrencyChoice.choices, default=CurrencyChoice.UZS)
     negotiable = models.BooleanField(_("Kelishiladi"), default=False)
 
     # === Qo‘shimcha ===

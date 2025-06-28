@@ -71,7 +71,6 @@ class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer)
             "floor",
             "total_floors",
             "floors_count",
-            "area",
             "apartment_area",
             "house_area",
             "land_area",
@@ -105,13 +104,15 @@ class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer)
         return LS.get_amenity(obj)
 
 
+
+
+import json  # stringni listga aylantirish uchun
+
 class CreateListingSerializer(serializers.ModelSerializer):
     images = BaseListingimageSerializer(many=True, write_only=True, required=False)
-    amenity = serializers.PrimaryKeyRelatedField(
-        queryset=AmenityModel.objects.all(),
-        many=True,
-        required=False
-    )
+    
+    # amenity ni oddiy string sifatida qabul qilamiz
+    amenity = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = ListingModel
@@ -128,7 +129,6 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "floor",
             "total_floors",
             "floors_count",
-            "area",
             "apartment_area",
             "house_area",
             "land_area",
@@ -148,11 +148,23 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "images"
         ]
 
+    def validate_amenity(self, value):
+        """
+        amenity: '[4, 5]' yoki '["4", "5"]' => listga aylantiramiz
+        """
+        try:
+            amenity_list = json.loads(value)  # stringdan list yasaymiz
+            return [int(a) for a in amenity_list]
+        except Exception:
+            raise serializers.ValidationError("amenity must be a JSON list of IDs")
+
     def create(self, validated_data):
         images_data = validated_data.pop("images", [])
-        amenities = validated_data.pop("amenity", [])
+        amenity_ids = validated_data.pop("amenity", [])
 
         listing = ListingModel.objects.create(**validated_data)
+
+        amenities = AmenityModel.objects.filter(id__in=amenity_ids)
         listing.amenity.set(amenities)
 
         for image_data in images_data:

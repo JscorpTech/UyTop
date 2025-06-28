@@ -27,9 +27,12 @@ class BuildingMaterialChoice(models.TextChoices):
 
 
 class PriceTypeChoice(models.TextChoices):
-    TOTAL = "total", _("Umumiy Narx"),
-    SQUARE = "square",_("Narx m2")
-    
+    TOTAL = "total", _("Umumiy Narx")
+    SQUARE = "square", _("Narx m2")
+    SELL_PRICE = "salePrice", _("Narxi (Sotuv)")
+    MONTHLY = "monthly", _("Oylik")
+    DAILY = "daily", _("Kunlik")
+
     
 class CurrencyChoice(models.TextChoices):
     UZS = "uzs", _("So'm")

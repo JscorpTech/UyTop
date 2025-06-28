@@ -19,7 +19,6 @@ class ListingAdmin(ModelAdmin, TabbedTranslationAdmin):
         "id",
         "name",
         "dealtype",
-        "area",
         "floor",
         "total_floors",
         "repair_type",
