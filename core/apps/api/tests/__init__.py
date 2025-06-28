@@ -1,4 +1,5 @@
 from .test_amenity import *  # noqa
+from .test_buildingMaterial import *  # noqa
 from .test_category import *  # noqa
 from .test_district import *  # noqa
 from .test_listing import *  # noqa

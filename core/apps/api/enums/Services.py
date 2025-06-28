@@ -1,4 +1,4 @@
-from ..serializers.property import BasePropertySerializer
+from ..serializers.buildingMaterial import BaseBuildingmaterialSerializer
 from ..serializers.listingImage import BaseListingimageSerializer
 from ..serializers.amenity import BaseAmenitySerializer
 
@@ -7,8 +7,8 @@ from ..serializers.amenity import BaseAmenitySerializer
 class ListingServices:
     
     @staticmethod
-    def get_property(property_obj):
-        return BasePropertySerializer(property_obj.property).data if property_obj else None
+    def get_building(building_obj):
+        return BaseBuildingmaterialSerializer(building_obj.building).data if building_obj else None
     
     
     @staticmethod

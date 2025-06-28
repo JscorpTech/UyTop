@@ -1,4 +1,5 @@
 from .amenity import *  # noqa
+from .buildingMaterial import *  # noqa
 from .category import *  # noqa
 from .district import *  # noqa
 from .listing import *  # noqa

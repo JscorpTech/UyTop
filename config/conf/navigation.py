@@ -54,15 +54,15 @@ PAGES = [
                 "link": reverse_lazy("admin:api_listingmodel_changelist"),
             },
             {
-                "title": _("E'lon turi"),
-                "icon": "style",
-                "link": reverse_lazy("admin:api_propertymodel_changelist"),
+                "title": _("Qurilish materiallari"),
+                "icon": "construction",
+                "link": reverse_lazy("admin:api_buildingmaterialmodel_changelist"),
             },
-            {
-                "title": _("E'lon osti turlari"),
-                "icon": "layers",
-                "link": reverse_lazy("admin:api_propertysubtypemodel_changelist"),
-            },
+            # {
+            #     "title": _("E'lon osti turlari"),
+            #     "icon": "layers",
+            #     "link": reverse_lazy("admin:api_propertysubtypemodel_changelist"),
+            # },
             {
                 "title": _("Qulayliklar"),
                 "icon": "weekend",

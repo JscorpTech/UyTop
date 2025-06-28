@@ -34,3 +34,9 @@ class PriceTypeChoice(models.TextChoices):
 class CurrencyChoice(models.TextChoices):
     UZS = "uzs", _("So'm")
     USD = "shb", _("Sh.b")
+    
+    
+
+class LandTypeChoices(models.TextChoices):
+    RESIDENTIAL = "residential", "Turar joy"
+    NON_RESIDENTIAL = "non-residential", "Noturar joy"

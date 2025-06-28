@@ -5,4 +5,6 @@ from core.apps.api.models import AmenityModel
 
 @register(AmenityModel)
 class AmenityTranslation(TranslationOptions):
-    fields = []
+    fields = [
+        "name"
+    ]
