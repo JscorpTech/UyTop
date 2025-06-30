@@ -10,6 +10,9 @@ class BotusersPermission(permissions.BasePermission):
         init_data = request.headers.get("initdata") 
         signature = request.headers.get("token")
 
+        print(init_data)
+        print(signature)
+
         if not init_data or not signature:
             return False
 

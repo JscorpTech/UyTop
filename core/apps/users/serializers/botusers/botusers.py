@@ -8,7 +8,9 @@ class BaseBotusersSerializer(serializers.ModelSerializer):
         model = BotusersModel
         fields = [
             "id",
-            "name",
+            "first_name",
+            "last_name",
+            "photo_url",
             "tg_id"
         ]
 
@@ -23,12 +25,20 @@ class RetrieveBotusersSerializer(BaseBotusersSerializer):
 
 
 class CreateBotusersSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(required=False)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    photo_url = serializers.URLField(required=False)
     tg_id = serializers.IntegerField(required=False)
 
     class Meta:
         model = BotusersModel
-        fields = ["id", "name", "tg_id"]
+        fields = [
+            "id",
+            "first_name",
+            "last_name",
+            "photo_url",
+            "tg_id"
+        ]
         
         
     def create(self, validated_data):

@@ -26,7 +26,7 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
     permission_classes = [AllowAny]
 
     action_permission_classes = {
-        "create": [BotusersPermission]
+        "create": [AllowAny, BotusersPermission]
     }
     
     action_serializer_class = {

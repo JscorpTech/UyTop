@@ -4,6 +4,7 @@ from core.apps.api.models import ListingModel, ListingimageModel, AmenityModel
 from core.apps.api.serializers.listingImage import BaseListingimageSerializer
 from ...enums.Services import ListingServices as LS
 from .currency import CurrencyPriceMixin
+from core.apps.users.serializers.botusers import BaseBotusersSerializer
 import json  
 
 
@@ -14,11 +15,13 @@ class BaseListingSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     amenity = serializers.SerializerMethodField()
     residential_complex = serializers.SerializerMethodField()
+    bot_user = serializers.SerializerMethodField()
 
     class Meta:
         model = ListingModel
         fields = [
-           "id",
+            "id",
+            "bot_user",
             "name",
             "dealtype",
             "property",
@@ -49,6 +52,9 @@ class BaseListingSerializer(serializers.ModelSerializer):
             "images",
             "amenity"
         ]
+
+    def get_bot_user(self, obj):
+        return BaseBotusersSerializer(obj.bot_user).data
 
     def get_building(self, obj):
         return LS.get_building(obj)
