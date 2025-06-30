@@ -15,7 +15,9 @@ from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
 ################
 urlpatterns = [
     path("", include("core.apps.accounts.urls")),
-    path("", include("core.apps.api.urls"))
+    path("", include("core.apps.api.urls")),
+    path("", include("core.apps.users.urls")),
+    
 ]
 
 

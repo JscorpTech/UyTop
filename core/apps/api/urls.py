@@ -9,6 +9,7 @@ from core.apps.api.views import (
     PropertysubtypeView,
     BuildingmaterialView,
     ResidentialcomplexView
+    
 )
 
 

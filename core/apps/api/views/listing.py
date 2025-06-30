@@ -9,6 +9,14 @@ from core.apps.api.serializers.listing import (
     ListListingSerializer,
     RetrieveListingSerializer,
 )
+from core.apps.users.permissions.botusers import BotusersPermission
+
+# me
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+
+
 
 
 @extend_schema(tags=["listing"])
@@ -17,7 +25,10 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
     serializer_class = ListListingSerializer
     permission_classes = [AllowAny]
 
-    action_permission_classes = {}
+    action_permission_classes = {
+        "create": [BotusersPermission]
+    }
+    
     action_serializer_class = {
         "list": ListListingSerializer,
         "retrieve": RetrieveListingSerializer,
@@ -29,3 +40,13 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         context["request"] = self.request
         return context
 
+    @action(detail=False, methods=["get"], url_path="me", permission_classes=[BotusersPermission])
+    def me(self, request):
+        user = getattr(request, "bot_user", None)
+        if not user:
+            return Response({"detail": "Foydalanuvchi aniqlanmadi"}, status=401)
+        
+        listings = ListingModel.objects.filter(bot_user=user)
+        serializer = ListListingSerializer(listings, many=True)
+        return Response(serializer.data)
+    

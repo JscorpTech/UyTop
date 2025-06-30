@@ -10,6 +10,12 @@ from core.apps.api.enums.listing import (
 
 
 class ListingModel(AbstractBaseModel):
+    bot_user = models.ForeignKey(
+        "users.BotusersModel",
+        on_delete=models.CASCADE,
+        related_name="listings",
+        blank=True, null=True
+    )
     name = models.CharField(_("Nomi"), max_length=255)
 
     dealtype = models.CharField(

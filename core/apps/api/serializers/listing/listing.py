@@ -137,11 +137,13 @@ class CreateListingSerializer(serializers.ModelSerializer):
             required=False
     )    
     amenity = serializers.CharField(write_only=True, required=False)
+    
 
     class Meta:
         model = ListingModel
         fields = [
             "id",
+            "bot_user",
             "name",
             "dealtype",
             "property",
@@ -173,6 +175,8 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "images"
         ]
 
+        read_only_fields = ["bot_user"]  
+        
     def validate_amenity(self, value):
         try:
             amenity_list = json.loads(value)  
@@ -182,8 +186,16 @@ class CreateListingSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
+        request = self.context.get("request")
+        bot_user = getattr(request, "bot_user", None)
+        
+        if not bot_user:
+            raise serializers.ValidationError("foydalanuvchi yoq dedimku")
+        
         images = validated_data.pop("images", [])
         amenity_ids = validated_data.pop("amenity", [])
+
+        validated_data["bot_user"] = bot_user
 
         listing = ListingModel.objects.create(**validated_data)
 
