@@ -154,6 +154,21 @@ SILKY_PYTHON_PROFILER = True
 MODELTRANSLATION_LANGUAGES = ("uz", "ru")
 MODELTRANSLATION_DEFAULT_LANGUAGE = "uz"
 
+
+
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "token",
+    "initdata",
+)
+
+
+
 PARLER_LANGUAGES = {
     None: (
         {'code': 'uz',},

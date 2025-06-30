@@ -3,8 +3,8 @@ import hmac, hashlib, json
 from django.conf import settings    
 
 user = {
-    "id": 4,
-    "name": "HUsanjon",
+    "id": 432545435435,
+    "name": "Ali",
 }
 auth_date = 1719834843
 
