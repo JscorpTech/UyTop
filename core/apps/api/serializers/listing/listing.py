@@ -9,7 +9,6 @@ import json
 
 
 
-
 class BaseListingSerializer(serializers.ModelSerializer):
     building = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
