@@ -4,6 +4,7 @@ from core.apps.api.models import ListingModel, ListingimageModel, AmenityModel
 from core.apps.api.serializers.listingImage import BaseListingimageSerializer
 from ...enums.Services import ListingServices as LS
 from .currency import CurrencyPriceMixin
+import json  
 
 
 
@@ -18,15 +19,36 @@ class BaseListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListingModel
         fields = [
-            "id",
-            "images",
-            "price",
-            "price_type",
+           "id",
+            "name",
+            "dealtype",
+            "property",
+            "property_subtype",
+            "latitude",
+            "longitude",
+            "address",
             "room_count",
+            "floor",
             "total_floors",
+            "floors_count",
+            "apartment_area",
+            "house_area",
+            "land_area",
+            "office_area",
+            "building_area",
+            "construction_area",
+            "room_area",
+            "repair_type",
+            "building",
+            "price_type",
+            "price",
+            "negotiable",
             "description",
+            "phone",
             "currency",
-            "residential_complex"
+            "residential_complex",
+            "images",
+            "amenity"
         ]
 
     def get_building(self, obj):
@@ -108,12 +130,13 @@ class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer)
 
 
 
-import json  # stringni listga aylantirish uchun
 
 class CreateListingSerializer(serializers.ModelSerializer):
-    images = BaseListingimageSerializer(many=True, write_only=True, required=False)
-    
-    # amenity ni oddiy string sifatida qabul qilamiz
+    images = serializers.ListField(
+            child=serializers.ImageField(),
+            write_only=True,
+            required=False
+    )    
     amenity = serializers.CharField(write_only=True, required=False)
 
     class Meta:
@@ -152,25 +175,24 @@ class CreateListingSerializer(serializers.ModelSerializer):
         ]
 
     def validate_amenity(self, value):
-        """
-        amenity: '[4, 5]' yoki '["4", "5"]' => listga aylantiramiz
-        """
         try:
-            amenity_list = json.loads(value)  # stringdan list yasaymiz
+            amenity_list = json.loads(value)  
             return [int(a) for a in amenity_list]
         except Exception:
             raise serializers.ValidationError("amenity must be a JSON list of IDs")
 
+
     def create(self, validated_data):
-        images_data = validated_data.pop("images", [])
+        images = validated_data.pop("images", [])
         amenity_ids = validated_data.pop("amenity", [])
 
         listing = ListingModel.objects.create(**validated_data)
 
-        amenities = AmenityModel.objects.filter(id__in=amenity_ids)
-        listing.amenity.set(amenities)
+        if amenity_ids:
+            amenities = AmenityModel.objects.filter(id__in=amenity_ids)
+            listing.amenity.set(amenities)
 
-        for image_data in images_data:
-            ListingimageModel.objects.create(listing=listing, **image_data)
+        for image in images:
+            ListingimageModel.objects.create(listing=listing, image=image)
 
         return listing
