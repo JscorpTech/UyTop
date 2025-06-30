@@ -17,9 +17,9 @@ PAGES = [
         "separator": True,  
         "items": [
             {
-                "title": _("Users"),
+                "title": _("Foydalanuvchilar"),
                 "icon": "person",
-                "link": reverse_lazy("admin:accounts_user_changelist"),
+                "link": reverse_lazy("admin:users_botusersmodel_changelist"),
             },
             {
                 "title": _("Group"),

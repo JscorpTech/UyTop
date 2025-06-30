@@ -46,10 +46,10 @@ class ListingModel(AbstractBaseModel):
     address = models.CharField(_("Manzil"), max_length=255, blank=True, null=True)
 
     # === Xonalar va qavatlar ===
-    room_count = models.PositiveSmallIntegerField(_("Xonalar soni"), blank=True, null=True)
-    floor = models.PositiveSmallIntegerField(_("Nechinchi qavatda"), blank=True, null=True)
-    total_floors = models.PositiveSmallIntegerField(_("Binoni jami qavatlari"), blank=True, null=True)
-    floors_count = models.PositiveSmallIntegerField(_("Qavatlar soni"), blank=True, null=True)
+    room_count = models.CharField(_("Xonalar soni"), max_length=100, blank=True, null=True)
+    floor = models.CharField(_("Nechinchi qavatda"), max_length=100, blank=True, null=True)
+    total_floors = models.CharField(_("Binoni jami qavatlari"), max_length=100, blank=True, null=True)
+    floors_count = models.CharField(_("Qavatlar soni"), max_length=100, blank=True, null=True)
 
     # === Maydonlar ===
     apartment_area = models.FloatField(_("Kvartira maydoni"), blank=True, null=True)
