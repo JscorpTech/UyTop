@@ -53,7 +53,7 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         return Response(serializer.data)
         
         
-    @action(detail=False, methods=['delete'], url_path="delete/(?P<pk>[^/.]+)", permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=['delete'], url_path="me/delete/(?P<pk>[^/.]+)", permission_classes=[IsAuthenticated])
     def delete_my_listing(self, request, pk=None):
         user = request.user
         try:
