@@ -11,8 +11,7 @@ from core.apps.api.serializers.favorite import (
 )
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.exceptions import ValidationError
+from core.apps.api.enums.query import apply_sorting
 
 
 
@@ -41,7 +40,8 @@ class FavoriteView(BaseViewSetMixin, ModelViewSet):
     }
     
     def get_queryset(self):
-        return FavoriteModel.objects.filter(user=self.request.user).order_by('-created_at')
+        queryset = FavoriteModel.objects.filter(user=self.request.user)
+        return apply_sorting(queryset, self.request)
     
     
     
