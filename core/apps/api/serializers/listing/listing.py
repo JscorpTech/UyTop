@@ -6,6 +6,7 @@ from ...enums.Services import ListingServices as LS
 from .currency import CurrencyPriceMixin
 from core.apps.users.serializers.botusers import BaseBotusersSerializer
 import json  
+from core.apps.accounts.serializers import UserSerializer
 
 
 
@@ -15,13 +16,13 @@ class BaseListingSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     amenity = serializers.SerializerMethodField()
     residential_complex = serializers.SerializerMethodField()
-    bot_user = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
 
     class Meta:
         model = ListingModel
         fields = [
             "id",
-            "bot_user",
+            "user",
             "name",
             "dealtype",
             "property",
@@ -53,8 +54,8 @@ class BaseListingSerializer(serializers.ModelSerializer):
             "amenity"
         ]
 
-    def get_bot_user(self, obj):
-        return BaseBotusersSerializer(obj.bot_user).data
+    def get_user(self, obj):
+        return UserSerializer(obj.user).data
 
     def get_building(self, obj):
         return LS.get_building(obj)
@@ -149,7 +150,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
         model = ListingModel
         fields = [
             "id",
-            "bot_user",
+            "user",
             "name",
             "dealtype",
             "property",
@@ -181,7 +182,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "images"
         ]
 
-        read_only_fields = ["bot_user"]  
+        read_only_fields = ["user"]  
         
     def validate_amenity(self, value):
         try:
@@ -193,15 +194,15 @@ class CreateListingSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get("request")
-        bot_user = getattr(request, "bot_user", None)
+        user = request.user
         
-        if not bot_user:
+        if not user:
             raise serializers.ValidationError("foydalanuvchi yoq dedimku")
         
         images = validated_data.pop("images", [])
         amenity_ids = validated_data.pop("amenity", [])
 
-        validated_data["bot_user"] = bot_user
+        validated_data["user"] = user
 
         listing = ListingModel.objects.create(**validated_data)
 

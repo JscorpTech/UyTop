@@ -1,23 +1,26 @@
-from django.contrib.auth import base_user
+from django.contrib.auth.base_user import BaseUserManager
+from django.utils.translation import gettext_lazy as _
 
 
-class UserManager(base_user.BaseUserManager):
-    def create_user(self, phone, password=None, **extra_fields):
-        if not phone:
-            raise ValueError("The phone number must be set")
+class UserManager(BaseUserManager):
+    def create_user(self, tg_id, first_name, **extra_fields):
+        if not tg_id:
+            raise ValueError(_("Telegram ID majburiy."))
+        if not first_name:
+            raise ValueError(_("Ism majburiy."))
 
-        user = self.model(phone=phone, **extra_fields)
-        user.set_password(password)
+        user = self.model(tg_id=tg_id, first_name=first_name, **extra_fields)
+        user.set_unusable_password()  
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, phone, password=None, **extra_fields):
+    def create_superuser(self, tg_id, first_name, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
         if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
+            raise ValueError("Superuser uchun is_staff=True bo‘lishi shart.")
         if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
+            raise ValueError("Superuser uchun is_superuser=True bo‘lishi shart.")
 
-        return self.create_user(phone, password, **extra_fields)
+        return self.create_user(tg_id=tg_id, first_name=first_name, **extra_fields)

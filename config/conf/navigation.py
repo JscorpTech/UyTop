@@ -19,7 +19,7 @@ PAGES = [
             {
                 "title": _("Foydalanuvchilar"),
                 "icon": "person",
-                "link": reverse_lazy("admin:users_botusersmodel_changelist"),
+                "link": reverse_lazy("admin:accounts_user_changelist"),
             },
             {
                 "title": _("Group"),

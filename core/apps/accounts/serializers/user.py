@@ -4,12 +4,14 @@ from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        exclude = [
+        fields = [
+            "id",
+            "tg_id",
+            "first_name",
+            "last_name",
+            "photo_url",
             "created_at",
             "updated_at",
-            "password",
-            "groups",
-            "user_permissions"
         ]
         model = get_user_model()
 

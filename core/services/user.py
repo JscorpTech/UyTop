@@ -17,16 +17,16 @@ class UserService(sms.SmsService):
             "access": str(refresh.access_token),
         }
 
-    def create_user(self, phone, first_name, last_name, password):
+    def create_user(self, tg_id, first_name, last_name=None, photo_url=None):
         get_user_model().objects.update_or_create(
-            phone=phone,
-            defaults={
-                "phone": phone,
-                "first_name": first_name,
-                "last_name": last_name,
-                "password": hashers.make_password(password),
-            },
-        )
+        tg_id=tg_id,
+        defaults={
+            "tg_id": tg_id,
+            "first_name": first_name,
+            "last_name": last_name or "",
+            "photo_url": photo_url or "",  
+        },
+    )
 
     def send_confirmation(self, phone) -> bool:
         try:

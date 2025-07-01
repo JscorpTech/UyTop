@@ -16,7 +16,7 @@ auth_date = 1719834843
 
 data = {
     "auth_date": str(auth_date),
-    "user": json.dumps(user, separators=(",", ":"))  
+    "user": json.dumps(user)  
 }
 
 check_string = "\n".join(f"{k}={v}" for k, v in sorted(data.items()))

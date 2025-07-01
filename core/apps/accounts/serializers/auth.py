@@ -8,24 +8,25 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=255)
 
 
-class RegisterSerializer(serializers.ModelSerializer):
-    phone = serializers.CharField(max_length=255)
 
-    def validate_phone(self, value):
-        user = get_user_model().objects.filter(phone=value, validated_at__isnull=False)
+class RegisterSerializer(serializers.ModelSerializer):
+    tg_id = serializers.IntegerField()
+    first_name = serializers.CharField(max_length=200)
+    last_name = serializers.CharField(max_length=200, required=True, allow_blank=True)
+    photo_url = serializers.URLField(required=True, allow_blank=True)
+
+    def validate_tg_id(self, value):
+        user = get_user_model().objects.filter(tg_id=value, validated_at__isnull=False)
         if user.exists():
-            raise exceptions.ValidationError(_("Phone number already registered."), code="unique")
+            raise exceptions.ValidationError(_("Tg id number already registered."), code="unique")
         return value
 
     class Meta:
         model = get_user_model()
-        fields = ["first_name", "last_name", "phone", "password"]
-        extra_kwargs = {
-            "first_name": {
-                "required": True,
-            },
-            "last_name": {"required": True},
-        }
+        fields = ["tg_id", "first_name", "last_name", "photo_url"]
+
+        
+        
 
 
 class ConfirmSerializer(serializers.Serializer):

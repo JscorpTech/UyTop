@@ -10,8 +10,8 @@ from core.apps.api.enums.listing import (
 
 
 class ListingModel(AbstractBaseModel):
-    bot_user = models.ForeignKey(
-        "users.BotusersModel",
+    user = models.ForeignKey(
+        "accounts.User",
         on_delete=models.CASCADE,
         related_name="listings",
         blank=True, null=True

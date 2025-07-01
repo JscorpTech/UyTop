@@ -5,7 +5,7 @@ from django_core.models import AbstractBaseModel
 
 class FavoriteModel(AbstractBaseModel):
     user = models.ForeignKey(
-        "users.BotusersModel",
+        "accounts.User",
         on_delete=models.CASCADE,
         related_name="favorite",
         blank=True, null=True 
