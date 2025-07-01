@@ -9,6 +9,12 @@ from core.apps.api.serializers.favorite import (
     ListFavoriteSerializer,
     RetrieveFavoriteSerializer,
 )
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.exceptions import ValidationError
+
+
 
 
 
@@ -25,6 +31,7 @@ class FavoriteView(BaseViewSetMixin, ModelViewSet):
         "list": [IsAuthenticated],
         "retrieve": [IsAuthenticated],
         "destroy": [IsAuthenticated],
+        "toggle": [IsAuthenticated]
     }
     
     action_serializer_class = {
@@ -34,7 +41,29 @@ class FavoriteView(BaseViewSetMixin, ModelViewSet):
     }
     
     def get_queryset(self):
-        return FavoriteModel.objects.filter(user=self.request.user)
+        return FavoriteModel.objects.filter(user=self.request.user).order_by('-created_at')
     
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    
+    
+    @action(detail=False, methods=["post"], url_path='toggle', permission_classes=[IsAuthenticated])
+    def toggle(self, request):
+        listing_id = request.data.get("listing")
+        if not listing_id:
+            return Response({"detail": "listing_id kiritilmadi"}, status=400)
+
+        user = request.user
+
+        favorite = FavoriteModel.objects.filter(user=user, listing_id=listing_id).first()
+
+        if favorite:
+            favorite.delete()
+            return Response({
+                "status": True,
+                "detail": "E'lon favoritedan olib tashlandi",
+                "is_favorited": False,
+            }, status=200)
+
+        favorite = FavoriteModel.objects.create(user=user, listing_id=listing_id)
+        serializer = ListFavoriteSerializer(favorite, context={"request": request})
+
+        return Response(serializer.data)

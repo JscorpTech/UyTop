@@ -17,7 +17,8 @@ class BaseFavoriteSerializer(serializers.ModelSerializer):
         ]
 
     def get_listing(self, obj):
-        return BaseListingSerializer(obj.listing).data 
+        request = self.context.get("request")
+        return BaseListingSerializer(obj.listing, context={"request": request}).data 
     
     def get_user(self, obj):
         return BaseBotusersSerializer(obj.user).data

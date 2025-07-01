@@ -86,60 +86,10 @@ class ListListingSerializer(BaseListingSerializer):
         fields = BaseListingSerializer.Meta.fields + ["name", "dealtype"]
 
 
-class RetrieveListingSerializer(CurrencyPriceMixin, serializers.ModelSerializer):
-    building = serializers.SerializerMethodField()
-    images = serializers.SerializerMethodField()
-    amenity = serializers.SerializerMethodField()
-    residential_complex = serializers.SerializerMethodField()
-    
 
-    class Meta:
-        model = ListingModel
-        fields = [
-            "id",
-            "name",
-            "dealtype",
-            "property",
-            "property_subtype",
-            "latitude",
-            "longitude",
-            "address",
-            "room_count",
-            "floor",
-            "total_floors",
-            "floors_count",
-            "apartment_area",
-            "house_area",
-            "land_area",
-            "office_area",
-            "building_area",
-            "construction_area",
-            "room_area",
-            "repair_type",
-            "building",
-            "price_type",
-            "price",
-            "negotiable",
-            "description",
-            "phone",
-            "currency",
-            "residential_complex",
-            "images",
-            "amenity"
-        ]
-
-    def get_building(self, obj):
-        return LS.get_building(obj)
-
-    def get_images(self, obj):
-        request = self.context.get("request")
-        return LS.get_images(obj, request)
-
-    def get_residential_complex(self, obj):
-        return LS.get_residential_complex(obj)
-
-    def get_amenity(self, obj):
-        return LS.get_amenity(obj)
+class RetrieveListingSerializer(BaseListingSerializer):
+    class Meta(BaseListingSerializer.Meta):
+        fields = BaseListingSerializer.Meta.fields
 
 
 
