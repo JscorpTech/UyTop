@@ -1,10 +1,9 @@
 from rest_framework import serializers
 
 from core.apps.api.models import ListingModel, ListingimageModel, AmenityModel
-from core.apps.api.serializers.listingImage import BaseListingimageSerializer
 from ...enums.Services import ListingServices as LS
 from .currency import CurrencyPriceMixin
-from core.apps.users.serializers.botusers import BaseBotusersSerializer
+from core.apps.api.models.favorite import FavoriteModel
 import json  
 from core.apps.accounts.serializers import UserSerializer
 
@@ -17,6 +16,7 @@ class BaseListingSerializer(serializers.ModelSerializer):
     amenity = serializers.SerializerMethodField()
     residential_complex = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
+    is_favorited = serializers.SerializerMethodField()
 
     class Meta:
         model = ListingModel
@@ -51,8 +51,16 @@ class BaseListingSerializer(serializers.ModelSerializer):
             "currency",
             "residential_complex",
             "images",
-            "amenity"
+            "amenity",
+            "is_favorited"
         ]
+
+
+    def get_is_favorited(self, obj):
+        request = self.context.get("request")
+        if not request or not request.user.is_authenticated:
+            return False
+        return FavoriteModel.objects.filter(user=request.user, listing=obj).exists()
 
     def get_user(self, obj):
         return UserSerializer(obj.user).data
