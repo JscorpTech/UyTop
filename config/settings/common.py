@@ -13,6 +13,7 @@ install(show_locals=True)
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
+TELEGRAM_BOT_TOKEN = env.str("TELEGRAM_BOT_TOKEN")
 DEBUG = env.bool("DEBUG")
 
 ALLOWED_HOSTS: Union[List[str]] = ["*"]

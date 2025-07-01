@@ -1,33 +1,34 @@
-import hmac
-import hashlib
-import json
+import hmac, hashlib, json
 from urllib.parse import parse_qsl
 from django.conf import settings
 from core.apps.users.models import BotusersModel
 
 
+
+
 def parse_auth_botuser(init_data: str, signature: str, request=None):
-    secret_key = settings.SECRET_KEY.encode()
-    computed_signature = hmac.new(secret_key, init_data.encode(), hashlib.sha256).hexdigest()
-
-    if not hmac.compare_digest(signature, computed_signature):
-        return None
-
     try:
         data = dict(parse_qsl(init_data))
-        user_raw = data.get("user")
+        hash_from_telegram = data.pop("hash", None)
+        if not hash_from_telegram:
+            return None
 
+        check_string = "\n".join(f"{k}={v}" for k, v in sorted(data.items()))
+        secret_key = hashlib.sha256(settings.TELEGRAM_BOT_TOKEN.encode()).digest()
+        calculated_hash = hmac.new(secret_key, check_string.encode(), hashlib.sha256).hexdigest()
+
+        if not hmac.compare_digest(calculated_hash, hash_from_telegram):
+            return None
+
+        user_raw = data.get("user")
         if not user_raw:
             return None
 
         user_data = json.loads(user_raw)
-        tg_id = user_data.get("id") 
+        tg_id = user_data.get("id")
         first_name = user_data.get("first_name", "user")
         last_name = user_data.get("last_name", "")
         photo_url = user_data.get("photo_url", "")
-
-        if not tg_id:
-            return None
 
         bot_user, created = BotusersModel.objects.get_or_create(
             tg_id=tg_id,
@@ -53,7 +54,7 @@ def parse_auth_botuser(init_data: str, signature: str, request=None):
                 bot_user.save()
 
         if request:
-            request.user = bot_user
+            request.bot_user = bot_user
 
         return bot_user
 
