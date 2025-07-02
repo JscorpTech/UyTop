@@ -16,6 +16,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from core.apps.api.enums.query import apply_sorting
+from django.db.models import Q
+
+
+# filter
+from django_filters.rest_framework import DjangoFilterBackend
+from core.apps.api.filters.listing import ListingFilter
+
 
 
 
@@ -24,6 +31,8 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
     queryset = ListingModel.objects.all()
     serializer_class = ListListingSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ListingFilter
 
     action_permission_classes = {
         "create": [IsAuthenticated]
@@ -58,6 +67,38 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
 
         serializer = ListListingSerializer(listings, many=True, context={"request": request})
         return Response(serializer.data)
+        
+        
+        
+        
+    @action(detail=False, methods=['get'], url_path="search", permission_classes=[IsAuthenticated])
+    def search(self, request):
+        
+        user = request.user
+        if not user or not user.is_authenticated:
+            return Response({"detail": "Foydalanuvchi aniqlanmadi"})
+        
+        search_query = request.query_params.get("search")
+        listing = ListingModel.objects.all()
+        
+        if search_query:
+            listing = listing.filter(
+                Q(name__icontains=search_query) |
+                Q(property__icontains=search_query) |
+                Q(property_subtype__icontains=search_query) |
+                Q(address__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(phone__icontains=search_query) |
+                Q(room_count__icontains=search_query) |
+                Q(floor__icontains=search_query) |
+                Q(total_floors__icontains=search_query) |
+                Q(price__icontains=search_query)
+            )
+            
+        serializer = ListListingSerializer(listing, many=True)
+        return Response(serializer.data)
+        
+        
         
         
         

@@ -10,7 +10,6 @@ from core.apps.api.views import (
     BuildingmaterialView,
     ResidentialcomplexView,
     FavoriteView
-    
 )
 
 
