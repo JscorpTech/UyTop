@@ -91,7 +91,6 @@ class ListingModel(AbstractBaseModel):
         choices=PriceTypeChoice.choices,
         default=PriceTypeChoice.TOTAL
     )
-
     price = models.CharField(_("Narx"), max_length=200, blank=True, null=True)
     currency = models.CharField(_("Valyuta"), max_length=100, choices=CurrencyChoice.choices, default=CurrencyChoice.UZS)
     negotiable = models.BooleanField(_("Kelishiladi"), default=False)
@@ -106,6 +105,11 @@ class ListingModel(AbstractBaseModel):
         blank=True,
         null=True
     )
+    is_top = models.BooleanField(verbose_name=_("Top elonmi"), default=False)
+    
+    top_start_date = models.DateField(null=True, blank=True)
+    top_end_date = models.DateField(null=True, blank=True)
+    
 
     def __str__(self):
         return str(self.name)
