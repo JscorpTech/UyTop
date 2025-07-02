@@ -35,7 +35,7 @@ class ListingModel(AbstractBaseModel):
 
     property = models.CharField(
         _("Mulk Turi"),
-        max_length=200,  # kvartira, uy, yer, xona, biznes
+        max_length=200,
         blank=True,
         null=True
     )
