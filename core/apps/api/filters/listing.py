@@ -15,8 +15,8 @@ class ListingFilter(filters.FilterSet):
     price_start = filters.NumberFilter(field_name="price", lookup_expr="gte")
     price_end = filters.NumberFilter(field_name="price", lookup_expr="lte")
 
-    area_start = filters.NumberFilter(field_name="apartment_area", lookup_expr="gte")
-    area_end = filters.NumberFilter(field_name="apartment_area", lookup_expr="lte")
+    area_start = filters.NumberFilter(field_name="land_area", lookup_expr="gte")
+    area_end = filters.NumberFilter(field_name="land_area", lookup_expr="lte")
 
     class Meta:
         model = ListingModel
