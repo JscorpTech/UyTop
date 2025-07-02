@@ -52,7 +52,10 @@ class BaseListingSerializer(serializers.ModelSerializer):
             "residential_complex",
             "images",
             "amenity",
-            "is_favorited"
+            "is_favorited",
+            "is_top",
+            "top_start_date",
+            "top_end_date"
         ]
 
 
@@ -137,7 +140,10 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "phone",
             "currency",
             "amenity",
-            "images"
+            "images",
+            "is_top",
+            "top_start_date",
+            "top_end_date"
         ]
 
         read_only_fields = ["user"]  
