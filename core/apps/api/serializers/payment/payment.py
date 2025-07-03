@@ -8,7 +8,9 @@ class BasePaymentSerializer(serializers.ModelSerializer):
         model = PaymentModel
         fields = [
             "id",
-            "name",
+            "card_number",
+            "top_price",
+            "listing_price"
         ]
 
 
@@ -24,5 +26,5 @@ class CreatePaymentSerializer(BasePaymentSerializer):
     class Meta(BasePaymentSerializer.Meta):
         fields = [
             "id",
-            "name",
+            # "name",
         ]

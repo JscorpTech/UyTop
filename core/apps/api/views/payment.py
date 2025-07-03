@@ -3,8 +3,15 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from core.apps.api.models import PaymentModel
-from core.apps.api.serializers.payment import CreatePaymentSerializer, ListPaymentSerializer, RetrievePaymentSerializer
+from core.apps.api.models import CheckModel, PaymentModel
+from core.apps.api.serializers.payment import (
+    CreateCheckSerializer,
+    CreatePaymentSerializer,
+    ListCheckSerializer,
+    ListPaymentSerializer,
+    RetrieveCheckSerializer,
+    RetrievePaymentSerializer,
+)
 
 
 @extend_schema(tags=["payment"])
@@ -18,4 +25,18 @@ class PaymentView(BaseViewSetMixin, ReadOnlyModelViewSet):
         "list": ListPaymentSerializer,
         "retrieve": RetrievePaymentSerializer,
         "create": CreatePaymentSerializer,
+    }
+
+
+@extend_schema(tags=["check"])
+class CheckView(BaseViewSetMixin, ReadOnlyModelViewSet):
+    queryset = CheckModel.objects.all()
+    serializer_class = ListCheckSerializer
+    permission_classes = [AllowAny]
+
+    action_permission_classes = {}
+    action_serializer_class = {
+        "list": ListCheckSerializer,
+        "retrieve": RetrieveCheckSerializer,
+        "create": CreateCheckSerializer,
     }

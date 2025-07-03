@@ -19,8 +19,8 @@ class User(auth_models.AbstractUser):
         default=RoleChoice.USER,
     )
 
-    USERNAME_FIELD = "tg_id"
-    REQUIRED_FIELDS = ["first_name"]
+    USERNAME_FIELD = "phone"
+    # REQUIRED_FIELDS = ["first_name"]
 
     objects = UserManager()
 

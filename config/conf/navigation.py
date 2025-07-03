@@ -9,7 +9,7 @@ PAGES = [
                 "title": _("Home page"),
                 "icon": "home",
                 "link": reverse_lazy("admin:index"),
-            }
+            },
         ],
     },
     {
@@ -21,10 +21,15 @@ PAGES = [
                 "icon": "person",
                 "link": reverse_lazy("admin:accounts_user_changelist"),
             },
+            # {
+            #     "title": _("To'lovlar"),
+            #     "icon": "group",
+            #     "link": reverse_lazy("admin:auth_group_changelist"),
+            # },
             {
-                "title": _("Group"),
-                "icon": "group",
-                "link": reverse_lazy("admin:auth_group_changelist"),
+                "title": _("E'lon Narxlari"),
+                "icon": "payment",
+                "link": reverse_lazy("admin:api_paymentmodel_changelist"),
             },
         ],
     },

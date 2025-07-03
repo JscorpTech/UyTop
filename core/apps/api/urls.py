@@ -9,7 +9,7 @@ from core.apps.api.views import (
     PropertysubtypeView,
     BuildingmaterialView,
     ResidentialcomplexView,
-    FavoriteView
+    FavoriteView, PaymentView
 )
 
 
@@ -24,7 +24,7 @@ router.register(r"property-subtype", PropertysubtypeView, basename="propertysubt
 router.register(r"building-material", BuildingmaterialView, basename="building-material")
 router.register(r"residential-complex", ResidentialcomplexView, basename="residential-complex")
 router.register(r"favorites", FavoriteView, basename="favorites")
-
+router.register(r"payment", PaymentView, basename="payment")
 
 
 urlpatterns = [
