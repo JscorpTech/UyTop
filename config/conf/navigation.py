@@ -21,14 +21,14 @@ PAGES = [
                 "icon": "person",
                 "link": reverse_lazy("admin:accounts_user_changelist"),
             },
-            # {
-            #     "title": _("To'lovlar"),
-            #     "icon": "group",
-            #     "link": reverse_lazy("admin:auth_group_changelist"),
-            # },
+            {
+                "title": _("To'lovlar"),
+                "icon": "payment",
+                "link": reverse_lazy("admin:api_checkmodel_changelist"),
+            },
             {
                 "title": _("E'lon Narxlari"),
-                "icon": "payment",
+                "icon": "price_check",
                 "link": reverse_lazy("admin:api_paymentmodel_changelist"),
             },
         ],

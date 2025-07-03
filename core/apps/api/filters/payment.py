@@ -15,11 +15,11 @@ from core.apps.api.models import CheckModel
 #         ]
 
 
-class CheckFilter(filters.FilterSet):
-    # name = filters.CharFilter(field_name="name", lookup_expr="icontains")
+# class CheckFilter(filters.FilterSet):
+#     # name = filters.CharFilter(field_name="name", lookup_expr="icontains")
 
-    class Meta:
-        model = CheckModel
-        fields = [
-            "name",
-        ]
+#     class Meta:
+#         model = CheckModel
+#         fields = [
+#             "name",
+#         ]

@@ -1,7 +1,7 @@
 from django_core.mixins import BaseViewSetMixin
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 
 from core.apps.api.models import CheckModel, PaymentModel
 from core.apps.api.serializers.payment import (
@@ -29,7 +29,7 @@ class PaymentView(BaseViewSetMixin, ReadOnlyModelViewSet):
 
 
 @extend_schema(tags=["check"])
-class CheckView(BaseViewSetMixin, ReadOnlyModelViewSet):
+class CheckView(BaseViewSetMixin, ModelViewSet):
     queryset = CheckModel.objects.all()
     serializer_class = ListCheckSerializer
     permission_classes = [AllowAny]

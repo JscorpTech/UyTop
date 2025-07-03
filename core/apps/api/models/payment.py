@@ -25,12 +25,24 @@ class PaymentModel(AbstractBaseModel):
         verbose_name_plural = _("PaymentModels")
 
 
-class CheckModel(AbstractBaseModel):
 
-    name = models.CharField(verbose_name=_("name"), max_length=255)
+class CheckModel(AbstractBaseModel):
+    listing = models.ForeignKey(
+        "api.ListingModel",
+        verbose_name=_("Elon"),
+        on_delete=models.CASCADE,
+        blank=True, null=True
+    )
+    
+    image = models.ImageField(
+        verbose_name=_("Check"),
+        upload_to="check/",
+        blank=True, null=True
+    )
+    
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.listing.id)
 
     @classmethod
     def _create_fake(self):
