@@ -6,6 +6,7 @@ from .currency import CurrencyPriceMixin
 from core.apps.api.models.favorite import FavoriteModel
 import json  
 from core.apps.accounts.serializers import UserSerializer
+from .enums.send_telegram import send_telegram
 
 
 
@@ -21,19 +22,26 @@ class BaseListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListingModel
         fields = [
+            # Asosiy ma'lumotlar
             "id",
             "user",
             "name",
             "dealtype",
             "property",
             "property_subtype",
+
+            # Lokatsiya
             "latitude",
             "longitude",
             "address",
+
+            # Xonalar / Qavatlar
             "room_count",
             "floor",
             "total_floors",
             "floors_count",
+
+            # Maydon o'lchamlari
             "apartment_area",
             "house_area",
             "land_area",
@@ -41,22 +49,36 @@ class BaseListingSerializer(serializers.ModelSerializer):
             "building_area",
             "construction_area",
             "room_area",
+
+            # Tamirlash va bino haqida
             "repair_type",
             "building",
+            "residential_complex",
+
+            # Narx bilan bog‘liq
             "price_type",
             "price",
             "negotiable",
+            "currency",
+
+            # Qo‘shimcha ma’lumot
             "description",
             "phone",
-            "currency",
-            "residential_complex",
             "images",
             "amenity",
+
+            # Foydalanuvchi holati
             "is_favorited",
+
+            # Top listing
             "is_top",
             "top_start_date",
-            "top_end_date"
+            "top_end_date",
+
+            # Holat
+            "is_active",
         ]
+
 
 
     def get_is_favorited(self, obj):
@@ -97,7 +119,6 @@ class RetrieveListingSerializer(BaseListingSerializer):
 
 
 
-
 class CreateListingSerializer(serializers.ModelSerializer):
     images = serializers.ListField(
             child=serializers.ImageField(),
@@ -110,19 +131,26 @@ class CreateListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListingModel
         fields = [
+            # Asosiy ma'lumotlar
             "id",
             "user",
             "name",
             "dealtype",
             "property",
             "property_subtype",
+
+            # Lokatsiya
             "latitude",
             "longitude",
             "address",
+
+            # Xonalar / Qavatlar
             "room_count",
             "floor",
             "total_floors",
             "floors_count",
+
+            # Maydon o'lchamlari
             "apartment_area",
             "house_area",
             "land_area",
@@ -130,21 +158,33 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "building_area",
             "construction_area",
             "room_area",
+
+            # Tamirlash va bino haqida
             "repair_type",
             "building",
+            "residential_complex",
+
+            # Narx bilan bog‘liq
             "price_type",
             "price",
             "negotiable",
-            "description",
-            "residential_complex",
-            "phone",
             "currency",
+
+            # Qo‘shimcha ma’lumot
+            "description",
+            "phone",
             "amenity",
             "images",
+
+            # Top listing
             "is_top",
             "top_start_date",
-            "top_end_date"
+            "top_end_date",
+
+            # Holat
+            "is_active",
         ]
+
 
         read_only_fields = ["user"]  
         
@@ -176,5 +216,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
 
         for image in images:
             ListingimageModel.objects.create(listing=listing, image=image)
+
+        send_telegram(listing)
 
         return listing

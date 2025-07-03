@@ -42,7 +42,7 @@ class ListingModel(AbstractBaseModel):
 
     property_subtype = models.CharField(
         _("Mulk quyi turi"),
-        max_length=100,  # yangi-bino, hovli, noturar-joy, omborxona, va h.k.
+        max_length=100,
         blank=True,
         null=True
     )
@@ -105,7 +105,9 @@ class ListingModel(AbstractBaseModel):
         blank=True,
         null=True
     )
-    is_top = models.BooleanField(verbose_name=_("Top elonmi"), default=False)
+    is_top = models.BooleanField(verbose_name=_("Top elonmi ?"), default=False)
+    is_active = models.BooleanField(verbose_name=_("Activmi ?"), default=False)
+    
     
     top_start_date = models.DateField(null=True, blank=True)
     top_end_date = models.DateField(null=True, blank=True)
@@ -113,6 +115,19 @@ class ListingModel(AbstractBaseModel):
 
     def __str__(self):
         return str(self.name)
+    
+    # @property
+    # def get_main_room_count(self):
+    #     return self.room_count or self.floor or self.total_floors or self.floors_count or "-"
+
+    # @property
+    # def get_main_area(self):
+    #     return (
+    #         self.apartment_area or self.house_area or self.land_area or self.office_area or
+    #         self.building_area or self.construction_area or self.room_area or "-"
+    #     )
+    
+    
 
     @classmethod
     def _create_fake(cls):
