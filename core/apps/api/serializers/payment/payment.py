@@ -9,6 +9,7 @@ class BasePaymentSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "card_number",
+            "card_owner",
             "top_price",
             "listing_price"
         ]

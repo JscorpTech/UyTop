@@ -5,6 +5,7 @@ from django_core.models import AbstractBaseModel
 
 class PaymentModel(AbstractBaseModel):
     card_number = models.CharField(verbose_name=_("Karta raqam"), max_length=50)
+    card_owner = models.CharField(verbose_name=_("Karta egasi"), max_length=200)
     top_price = models.CharField(
         verbose_name=_("Top elon kunlik narxi"), max_length=100, blank=True, null=True, help_text="(1 kunlik narx)"
     )

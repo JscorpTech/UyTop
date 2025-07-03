@@ -10,6 +10,7 @@ class PaymentAdmin(ModelAdmin):
     list_display = (
         "id",
         "card_number",
+        "card_owner",
         "top_price",
         "listing_price",
     )
