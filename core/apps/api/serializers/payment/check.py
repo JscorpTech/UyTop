@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from core.apps.api.models import CheckModel, ListingModel
+from core.apps.api.serializers.listing.enums.send_telegram import send_check
 
 
 class BaseCheckSerializer(serializers.ModelSerializer):
@@ -30,3 +31,9 @@ class CreateCheckSerializer(serializers.ModelSerializer):
             "listing",
             "image"
         ]
+        
+        
+    def create(self, validated_data):
+        check = super().create(validated_data)
+        send_check(check)
+        return check

@@ -38,3 +38,19 @@ def captio_text(listing, map_url):
     """
     
     return caption
+
+ADMIN_CONFIRM = \
+"""
+e'loni tasdiqlashingiz bilan elon active bo'ladi
+E'lon id: <code>{}</code>
+"""
+
+CHECK_ADMIN = \
+"""
+✅ To'lov tasdiqlandi!
+
+🆔 E'lon ID: <code>{lesson_id}</code> 
+👤 Foydalanuvchi: {first_name}
+
+E'lon tizimda faol holatga o'tdi.
+"""

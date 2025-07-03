@@ -5,12 +5,10 @@ from telebot import types
 
 from django.conf import settings
 from core.apps.api.models import ListingimageModel
-from .texts import captio_text
+from .texts import captio_text, ADMIN_CONFIRM, CHECK_ADMIN
 
 
 bot = telebot.TeleBot(token=settings.TELEGRAM_BOT_TOKEN)
-
-
 
 
 
@@ -48,4 +46,29 @@ def send_telegram(listing):
 
 
 
+    
+    bot.send_message(
+        chat_id=settings.ADMIN,
+        text=ADMIN_CONFIRM.format(listing.id),
+        parse_mode="HTML"
+    )
+
+
+def send_check(check):
+    image = check.image
+    
+    caption = CHECK_ADMIN.format(
+        lesson_id=check.listing.id,
+        first_name=check.listing.user.first_name
+    )
+    button = types.InlineKeyboardMarkup()
+    button.add(types.InlineKeyboardButton(text="Tasdiqlash ✅", callback_data="check"))
+
+    bot.send_photo(
+        chat_id=settings.ADMIN,
+        photo=image,
+        caption=caption,
+        parse_mode="HTML",
+        reply_markup=button,
+    )
 
