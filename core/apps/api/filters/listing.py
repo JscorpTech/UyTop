@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 from core.apps.api.models import ListingModel
-
+from core.apps.api.enums.listing import ListingStatus
 
 class ListingFilter(filters.FilterSet):
     dealtype = filters.CharFilter(field_name="dealtype", lookup_expr="iexact")
@@ -18,6 +18,7 @@ class ListingFilter(filters.FilterSet):
     area_start = filters.NumberFilter(field_name="land_area", lookup_expr="gte")
     area_end = filters.NumberFilter(field_name="land_area", lookup_expr="lte")
     is_top = filters.BooleanFilter(field_name="is_top")
+    status = filters.ChoiceFilter(choices=ListingStatus.choices)
 
     class Meta:
         model = ListingModel
@@ -30,7 +31,8 @@ class ListingFilter(filters.FilterSet):
             "price_type",
             "building",
             "amenity",
-            "is_top"
+            "is_top",
+            "status",
         ]
 
 

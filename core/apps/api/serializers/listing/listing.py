@@ -77,6 +77,7 @@ class BaseListingSerializer(serializers.ModelSerializer):
 
             # Holat
             "is_active",
+            "status"
         ]
 
 

@@ -9,8 +9,9 @@ from core.apps.api.views import (
     PropertysubtypeView,
     BuildingmaterialView,
     ResidentialcomplexView,
-    FavoriteView, PaymentView,CheckView
+    FavoriteView, PaymentView, CheckView
 )
+from core.apps.api.views.top_listing import ListingIsTopView
 
 
 router = DefaultRouter()
@@ -31,4 +32,5 @@ router.register(r"check", CheckView, basename="check")
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("listing/top/<int:pk>/", ListingIsTopView.as_view(), name='listingistop')
 ]

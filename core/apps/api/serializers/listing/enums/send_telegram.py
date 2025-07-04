@@ -62,7 +62,7 @@ def send_check(check):
         first_name=check.listing.user.first_name
     )
     button = types.InlineKeyboardMarkup()
-    button.add(types.InlineKeyboardButton(text="Tasdiqlash ✅", callback_data="check"))
+    button.add(types.InlineKeyboardButton(text="Tasdiqlash ✅", callback_data=f"check_{check.listing.id}_{check.listing.user.tg_id}"))
 
     bot.send_photo(
         chat_id=settings.ADMIN,

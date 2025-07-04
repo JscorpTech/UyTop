@@ -5,7 +5,8 @@ from core.apps.api.enums.listing import (
     DealTypeChoice,
     RepairTypeChoice,
     PriceTypeChoice,
-    CurrencyChoice
+    CurrencyChoice,
+    ListingStatus
 )
 
 
@@ -108,7 +109,12 @@ class ListingModel(AbstractBaseModel):
     is_top = models.BooleanField(verbose_name=_("Top elonmi ?"), default=False)
     is_active = models.BooleanField(verbose_name=_("Activmi ?"), default=False)
     
-    
+    status = models.CharField(
+        verbose_name=_("Status"),
+        max_length=100,
+        choices=ListingStatus.choices,
+        default=ListingStatus.PENDING
+    )
     top_start_date = models.DateField(null=True, blank=True)
     top_end_date = models.DateField(null=True, blank=True)
     

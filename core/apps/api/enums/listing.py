@@ -43,3 +43,9 @@ class CurrencyChoice(models.TextChoices):
 class LandTypeChoices(models.TextChoices):
     RESIDENTIAL = "residential", "Turar joy"
     NON_RESIDENTIAL = "non-residential", "Noturar joy"
+
+
+class ListingStatus(models.TextChoices):
+    PENDING = 'pending', 'Kutilmoqda'
+    APPROVED = 'approved', 'Tasdiqlangan'
+    REJECTED = 'rejected', 'Rad etilgan'
