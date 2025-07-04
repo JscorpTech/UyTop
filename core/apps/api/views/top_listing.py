@@ -1,7 +1,6 @@
 from django.db.models import Case, When
-from django.db.models.query import QuerySet
 from core.apps.api.models import ListingModel
-from core.apps.api.enums.query import apply_sorting
+from core.apps.api.enums.listing import ListingStatus
 import random
 
 
@@ -16,7 +15,7 @@ from rest_framework.permissions import AllowAny
 from itertools import chain
 from django.db.models import Case, When
 from django.db.models import Case, When, Value, IntegerField
-
+from datetime import date, timedelta
 
 
 
@@ -25,9 +24,12 @@ class ListingIsTopView(APIView):
     def post(self, request, pk):
         listing = get_object_or_404(ListingModel, pk=pk)
         
+        today = date.today()
+        
         listing.is_active = True
         listing.is_top = True
-        
+        listing.top_start_date = today
+        listing.status = ListingStatus.APPROVED
         
         listing.save()
         

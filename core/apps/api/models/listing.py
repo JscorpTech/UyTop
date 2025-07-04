@@ -9,6 +9,9 @@ from core.apps.api.enums.listing import (
     ListingStatus
 )
 
+from django.utils import timezone
+from datetime import date
+
 
 class ListingModel(AbstractBaseModel):
     user = models.ForeignKey(
@@ -118,20 +121,17 @@ class ListingModel(AbstractBaseModel):
     top_start_date = models.DateField(null=True, blank=True)
     top_end_date = models.DateField(null=True, blank=True)
     
+    
+    
+    def check_top_status(self):
+        today = date.today()
+        if self.is_top and self.top_end_date and self.top_end_date <= today:
+            self.is_top = False
+            self.save()
+    
 
     def __str__(self):
         return str(self.name)
-    
-    # @property
-    # def get_main_room_count(self):
-    #     return self.room_count or self.floor or self.total_floors or self.floors_count or "-"
-
-    # @property
-    # def get_main_area(self):
-    #     return (
-    #         self.apartment_area or self.house_area or self.land_area or self.office_area or
-    #         self.building_area or self.construction_area or self.room_area or "-"
-    #     )
     
     
 
