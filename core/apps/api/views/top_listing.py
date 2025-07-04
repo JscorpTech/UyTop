@@ -36,10 +36,11 @@ class ListingIsTopView(APIView):
 
 
 
-def get_sorted_listings(request):
-    top_ids = list(ListingModel.objects.filter(is_top=True).values_list("id", flat=True))
+
+def get_sorted_listings(queryset, is_top_count=3):
+    top_ids = list(queryset.filter(is_top=True).values_list("id", flat=True))
     random.shuffle(top_ids)
-    top_ids = top_ids[:3]
+    top_ids = top_ids[:is_top_count]
 
     preserved = Case(
         *[When(id=pk, then=Value(pos)) for pos, pk in enumerate(top_ids)],
@@ -47,8 +48,4 @@ def get_sorted_listings(request):
         output_field=IntegerField()
     )
 
-    queryset = ListingModel.objects.annotate(
-        top_order=preserved
-    ).order_by("top_order", "-created_at") 
-
-    return queryset
+    return queryset.annotate(top_order=preserved).order_by("top_order", "-created_at")

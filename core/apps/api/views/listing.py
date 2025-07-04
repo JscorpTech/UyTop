@@ -48,32 +48,39 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         context = super().get_serializer_context()
         context["request"] = self.request
         return context
-    
-    
 
     def get_queryset(self):
         if self.action == "list":
             queryset = ListingModel.objects.all()
-            return get_sorted_listings(self.request)
-        
-        queryset = ListingModel.objects.all()
-        return apply_sorting(queryset, self.request)
+            queryset = apply_sorting(queryset, self.request)
+            return get_sorted_listings(queryset)
+
+        return apply_sorting(ListingModel.objects.all(), self.request)
 
 
 
     @action(detail=False, methods=["get"], url_path="me", permission_classes=[IsAuthenticated])
-    def me(self, request):
+    def me(self, request):        
         user = request.user
         if not user or not user.is_authenticated:
             return Response({"detail": "Foydalanuvchi aniqlanmadi"}, status=401)
 
-        listings = ListingModel.objects.filter(user=user)
-        listings = get_sorted_listings(request)
 
-        serializer = ListListingSerializer(listings, many=True, context={"request": request})
+        status_query = request.query_params.get("status")
+
+
+        queryset = ListingModel.objects.filter(user=user)
+        
+        if status_query:
+            queryset = queryset.filter(status=status_query)
+
+        queryset = apply_sorting(queryset, request)
+        queryset = get_sorted_listings(queryset)
+
+        serializer = ListListingSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
-    
-    
+
+
 
     @action(detail=False, methods=['get'], url_path="search", permission_classes=[IsAuthenticated])
     def search(self, request):
@@ -82,10 +89,10 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
             return Response({"detail": "Foydalanuvchi aniqlanmadi"})
         
         search_query = request.query_params.get("search")
-        listing = ListingModel.objects.all()
+        queryset = ListingModel.objects.all()
         
         if search_query:
-            listing = listing.filter(
+            queryset = queryset.filter(
                 Q(name__icontains=search_query) |
                 Q(property__icontains=search_query) |
                 Q(property_subtype__icontains=search_query) |
@@ -97,9 +104,11 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
                 Q(total_floors__icontains=search_query) |
                 Q(price__icontains=search_query)
             )
-        
-        listing = get_sorted_listings(request)
-        serializer = ListListingSerializer(listing, many=True)
+
+        queryset = apply_sorting(queryset, request)
+        queryset = get_sorted_listings(queryset)
+
+        serializer = ListListingSerializer(queryset, many=True)
         return Response(serializer.data)
 
     @action(detail=False, methods=['delete'], url_path="me/delete/(?P<pk>[^/.]+)", permission_classes=[IsAuthenticated])
