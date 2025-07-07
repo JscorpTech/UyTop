@@ -2,6 +2,7 @@ from ..serializers.buildingMaterial import BaseBuildingmaterialSerializer
 from ..serializers.listingImage import BaseListingimageSerializer
 from ..serializers.amenity import BaseAmenitySerializer
 from ..serializers.residential import BaseResidentialcomplexSerializer
+from ..serializers.toplisting import BaseToplistingpriceSerializer
 
 
 
@@ -30,3 +31,8 @@ class ListingServices:
     @staticmethod
     def get_residential_complex(residential_complex_obj):
         return BaseResidentialcomplexSerializer(residential_complex_obj.residential_complex).data 
+    
+    
+    @staticmethod
+    def get_toplisting(obj):
+        return BaseToplistingpriceSerializer(obj.toplisting).data

@@ -8,5 +8,6 @@ from core.apps.api.models import ToplistingpriceModel
 class ToplistingpriceAdmin(ModelAdmin):
     list_display = (
         "id",
-        "__str__",
+        "day",
+        "price"
     )

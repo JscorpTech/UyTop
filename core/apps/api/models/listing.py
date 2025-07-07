@@ -118,6 +118,12 @@ class ListingModel(AbstractBaseModel):
         choices=ListingStatus.choices,
         default=ListingStatus.PENDING
     )
+    toplisting = models.ForeignKey(
+        "api.ToplistingpriceModel",
+        on_delete=models.CASCADE,
+        verbose_name=_("Top Elon kunlari"),
+        blank=True, null=True
+    )
     top_start_date = models.DateField(null=True, blank=True)
     top_end_date = models.DateField(null=True, blank=True)
     

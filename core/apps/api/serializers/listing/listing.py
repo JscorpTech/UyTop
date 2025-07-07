@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.apps.api.models import ListingModel, ListingimageModel, AmenityModel
+from core.apps.api.models import ListingModel, ListingimageModel, AmenityModel, ToplistingpriceModel
 from ...enums.Services import ListingServices as LS
 from .currency import CurrencyPriceMixin
 from core.apps.api.models.favorite import FavoriteModel
@@ -18,6 +18,7 @@ class BaseListingSerializer(serializers.ModelSerializer):
     residential_complex = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
     is_favorited = serializers.SerializerMethodField()
+    toplisting = serializers.SerializerMethodField()
 
     class Meta:
         model = ListingModel
@@ -72,6 +73,7 @@ class BaseListingSerializer(serializers.ModelSerializer):
 
             # Top listing
             "is_top",
+            "toplisting",
             "top_start_date",
             "top_end_date",
 
@@ -105,6 +107,9 @@ class BaseListingSerializer(serializers.ModelSerializer):
 
     def get_amenity(self, obj):
         return LS.get_amenity(obj)
+    
+    def get_toplisting(self, obj):
+        return LS.get_toplisting(obj)
 
 
 class ListListingSerializer(BaseListingSerializer):
@@ -127,6 +132,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
             required=False
     )    
     amenity = serializers.CharField(write_only=True, required=False)
+    toplisting = serializers.IntegerField(required=False, write_only=True)
     
 
     class Meta:
@@ -179,6 +185,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
 
             # Top listing
             "is_top",
+            "toplisting",
             "top_start_date",
             "top_end_date",
 
@@ -209,6 +216,15 @@ class CreateListingSerializer(serializers.ModelSerializer):
 
         validated_data["user"] = user
         top_end_date = validated_data.get("top_end_date")
+        toplisting_id = validated_data.pop("toplisting", None)
+        
+        if toplisting_id:
+            try:
+                toplisting_obj = ToplistingpriceModel.objects.get(id=toplisting_id)
+                validated_data["toplisting"] = toplisting_obj
+            except ToplistingpriceModel.DoesNotExist:
+                raise serializers.ValidationError("Toplisting ID noto‘g‘ri")
+
 
         if top_end_date is None:
                 validated_data["is_active"] = True

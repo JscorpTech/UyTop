@@ -29,6 +29,11 @@ PAGES = [
             {
                 "title": _("E'lon Narxlari"),
                 "icon": "price_check",
+                "link": reverse_lazy("admin:api_toplistingpricemodel_changelist"),
+            },
+            {
+                "title": _("karta malumotlari"),
+                "icon": "price_check",
                 "link": reverse_lazy("admin:api_paymentmodel_changelist"),
             },
         ],

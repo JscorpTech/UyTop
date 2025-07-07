@@ -4,11 +4,11 @@ from django_core.models import AbstractBaseModel
 
 
 class ToplistingpriceModel(AbstractBaseModel):
-
-    name = models.CharField(verbose_name=_("name"), max_length=255)
+    day = models.CharField(verbose_name=_("Kun"), max_length=255)
+    price = models.CharField(verbose_name=_("Narx"), max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.day)
 
     @classmethod
     def _create_fake(self):

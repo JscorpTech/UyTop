@@ -8,7 +8,8 @@ class BaseToplistingpriceSerializer(serializers.ModelSerializer):
         model = ToplistingpriceModel
         fields = [
             "id",
-            "name",
+            "day",
+            "price"
         ]
 
 
