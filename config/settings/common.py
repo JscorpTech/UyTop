@@ -14,7 +14,8 @@ BASE_DIR = pathlib.Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 TELEGRAM_BOT_TOKEN = env.str("TELEGRAM_BOT_TOKEN")
-ADMIN = env("ADMIN")
+ADMIN = list(map(int, os.getenv("ADMIN", "").split(",")))
+
 BASE_URL=env("BASE_URL")
 DEBUG = env.bool("DEBUG")
 
