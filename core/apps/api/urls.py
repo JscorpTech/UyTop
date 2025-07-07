@@ -32,5 +32,5 @@ router.register(r"toplistingprice", ToplistingpriceView, basename="toplistingpri
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("listing/top/<int:pk>/", ListingIsTopView.as_view(), name='listingistop')
+    path("listing/top/<str:type>/<int:pk>/", ListingIsTopView.as_view(), name='listingistop')
 ]

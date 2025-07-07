@@ -21,17 +21,24 @@ from datetime import date, timedelta
 
 class ListingIsTopView(APIView):
     permission_classes = [AllowAny]
-    def post(self, request, pk):
+    def post(self, request, type, pk):
         listing = get_object_or_404(ListingModel, pk=pk)
         
         today = date.today()
-        
-        listing.is_active = True
-        listing.is_top = True
-        listing.top_start_date = today
-        listing.status = ListingStatus.APPROVED
-        
-        listing.save()
+
+        if type == "check":
+            listing.is_active = True
+            listing.is_top = True
+            listing.top_start_date = today
+            listing.status = ListingStatus.APPROVED
+            
+            listing.save()
+        else:
+            listing.is_active = False
+            listing.is_top = False
+            listing.status = ListingStatus.REJECTED
+            
+            listing.save()
         
         serializer = BaseListingSerializer(listing)
         return Response(serializer.data, status=status.HTTP_200_OK)
