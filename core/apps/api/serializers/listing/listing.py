@@ -208,7 +208,13 @@ class CreateListingSerializer(serializers.ModelSerializer):
         amenity_ids = validated_data.pop("amenity", [])
 
         validated_data["user"] = user
+        top_end_date = validated_data.get("top_end_date")
 
+        if top_end_date is None:
+                validated_data["is_active"] = True
+        else:
+            validated_data["is_active"] = False
+            
         listing = ListingModel.objects.create(**validated_data)
 
         if amenity_ids:

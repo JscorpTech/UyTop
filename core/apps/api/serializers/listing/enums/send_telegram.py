@@ -6,7 +6,6 @@ from django.conf import settings
 from core.apps.api.models import ListingimageModel
 from .texts import captio_text, ADMIN_CONFIRM, CHECK_ADMIN
 
-
 bot = telebot.TeleBot(token=settings.TELEGRAM_BOT_TOKEN)
 
 
