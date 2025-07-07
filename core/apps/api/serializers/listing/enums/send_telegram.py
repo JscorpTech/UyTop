@@ -41,12 +41,19 @@ def send_telegram(listing):
         )
 
 
+
 def send_check(check):
-    image = check.image
+    if not check.image:
+        print("⚠️ Xatolik: check.image mavjud emas")
+        return
+
+    image_url = f"{settings.BASE_URL}{check.image.url}"
+
     caption = CHECK_ADMIN.format(
         lesson_id=check.listing.id,
         first_name=check.listing.user.first_name
     )
+
     button = types.InlineKeyboardMarkup()
     button.add(
         types.InlineKeyboardButton(
@@ -56,10 +63,13 @@ def send_check(check):
     )
 
     for admin_id in settings.ADMIN:
-        bot.send_photo(
-            chat_id=admin_id,
-            photo=image,
-            caption=caption,
-            parse_mode="HTML",
-            reply_markup=button,
-        )
+        try:
+            bot.send_photo(
+                chat_id=admin_id,
+                photo=image_url,
+                caption=caption,
+                parse_mode="HTML",
+                reply_markup=button,
+            )
+        except Exception as e:
+            print("Telegramga yuborishda xatolik:", e)
