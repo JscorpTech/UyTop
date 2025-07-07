@@ -8,3 +8,4 @@ from .listingImage import *  # noqa
 from .payment import *  # noqa
 from .property import *  # noqa
 from .residential import *  # noqa
+from .toplisting import *  # noqa
