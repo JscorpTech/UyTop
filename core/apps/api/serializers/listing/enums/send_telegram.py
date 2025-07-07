@@ -16,7 +16,7 @@ bot = telebot.TeleBot(token=settings.TELEGRAM_BOT_TOKEN)
 
 def send_telegram(listing):
     map_url = f"https://yandex.com/maps/?ll={listing.longitude},{listing.latitude}&z=18"
-    listing_url=f'http://127.0.0.1:8042/admin/api/listingmodel/{listing.id}/change/'
+    listing_url=f'https://uytop.felixits.uz/admin/api/listingmodel/{listing.id}/change/'
     images = ListingimageModel.objects.filter(listing=listing)
     
 
