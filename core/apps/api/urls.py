@@ -9,7 +9,7 @@ from core.apps.api.views import (
     PropertysubtypeView,
     BuildingmaterialView,
     ResidentialcomplexView,
-    FavoriteView, PaymentView, CheckView
+    FavoriteView, PaymentView, CheckView, ToplistingpriceView
 )
 from core.apps.api.views.top_listing import ListingIsTopView
 
@@ -27,7 +27,7 @@ router.register(r"residential-complex", ResidentialcomplexView, basename="reside
 router.register(r"favorites", FavoriteView, basename="favorites")
 router.register(r"payment", PaymentView, basename="payment")
 router.register(r"check", CheckView, basename="check")
-
+router.register(r"toplistingprice", ToplistingpriceView, basename="toplistingprice")
 
 
 urlpatterns = [
