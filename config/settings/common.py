@@ -16,7 +16,7 @@ SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 TELEGRAM_BOT_TOKEN = env.str("TELEGRAM_BOT_TOKEN")
 ADMIN = env.int("ADMIN")
 
-BASE_URL=env("BASE_URL")
+BASES_URL="http://127.0.0.1:8042"
 DEBUG = env.bool("DEBUG")
 
 ALLOWED_HOSTS: Union[List[str]] = ["*"]

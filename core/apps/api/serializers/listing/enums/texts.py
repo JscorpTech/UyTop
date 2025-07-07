@@ -1,3 +1,5 @@
+
+
 def captio_text(listing, map_url):
     if listing.dealtype == 'sale':
         dealtype = "Sotiladi"

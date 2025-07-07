@@ -39,7 +39,7 @@ def send_telegram(listing):
             print("❌ Rasmlar yuborishda xatolik:", e)
 
     try:
-        caption_text = captio_text(listing, map_url, listing_url)
+        caption_text = captio_text(listing, map_url)
         bot.send_message(
             chat_id=settings.ADMIN,
             text=caption_text,
