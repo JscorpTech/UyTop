@@ -35,6 +35,7 @@ class BaseListingSerializer(serializers.ModelSerializer):
             "latitude",
             "longitude",
             "address",
+            "region",
 
             # Xonalar / Qavatlar
             "room_count",
@@ -149,7 +150,8 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "latitude",
             "longitude",
             "address",
-
+            "region",
+            
             # Xonalar / Qavatlar
             "room_count",
             "floor",

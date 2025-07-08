@@ -49,6 +49,7 @@ class ListingModel(AbstractBaseModel):
         null=True
     )
     # === Geolokatsiya ===
+    region = models.CharField(verbose_name=_("Viloyat"), max_length=200, blank=True, null=True)
     latitude = models.FloatField(_("Kenglik"), blank=True, null=True)
     longitude = models.FloatField(_("Uzunlik"), blank=True, null=True)
     address = models.CharField(_("Manzil"), max_length=255, blank=True, null=True)

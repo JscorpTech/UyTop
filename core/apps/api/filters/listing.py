@@ -11,6 +11,7 @@ class ListingFilter(filters.FilterSet):
     price_type = filters.CharFilter(field_name="price_type", lookup_expr="iexact")
     building = filters.NumberFilter(field_name="building__id")
     amenity = filters.BaseInFilter(field_name="amenity__id", lookup_expr="in")
+    region = filters.CharFilter(field_name="region", lookup_expr="iexact")
 
     price_start = filters.NumberFilter(field_name="price", lookup_expr="gte")
     price_end = filters.NumberFilter(field_name="price", lookup_expr="lte")
@@ -26,6 +27,7 @@ class ListingFilter(filters.FilterSet):
             "dealtype",
             "room_count",
             "repairType",
+            "region",
             "floor",
             "total_floors",
             "price_type",
