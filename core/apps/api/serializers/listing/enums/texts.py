@@ -31,6 +31,7 @@ def captio_text(listing, map_url):
 🛠 <b>Ta’mir holati:</b> {repair_type}
 📞 <b>Aloqa:</b> {listing.phone}
 📍 <b>Manzil:</b> {listing.address}
+🌐 <b>Tuman:</b> {listing.region}
 🗺 <a href="{map_url}">📍 Xaritada ko‘rish</a>
 
 📝 <b>Tavsif:</b> {listing.description if listing.description else "Mavjud emas"}
