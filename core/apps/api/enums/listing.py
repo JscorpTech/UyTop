@@ -49,3 +49,4 @@ class ListingStatus(models.TextChoices):
     PENDING = 'pending', 'Kutilmoqda'
     APPROVED = 'approved', 'Tasdiqlangan'
     REJECTED = 'rejected', 'Rad etilgan'
+    EXPIRED = 'expired', 'Muddati tugagan'

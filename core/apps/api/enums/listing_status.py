@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from ..enums.listing import ListingStatus
 
 def check_and_update_top_status(obj):
     today = date.today()
@@ -13,7 +14,8 @@ def check_and_update_top_status(obj):
     if obj.is_active and obj.top_start_date:
         expire_active_date = obj.top_start_date + timedelta(days=30)
         if today >= expire_active_date:
-            obj.is_active = False
+            obj.status = ListingStatus.EXPIRED
+            
             changed = True
 
     if changed:
