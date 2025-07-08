@@ -8,6 +8,8 @@ from core.apps.api.serializers.listing import (
     CreateListingSerializer,
     ListListingSerializer,
     RetrieveListingSerializer,
+    ListingTopStatusSerializer,
+    send_telegram
 )
 
 
@@ -22,6 +24,7 @@ from core.apps.api.views.top_listing import get_sorted_listings
 # filter
 from django_filters.rest_framework import DjangoFilterBackend
 from core.apps.api.filters.listing import ListingFilter
+
 
 
 
@@ -80,6 +83,19 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         serializer = ListListingSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
+
+    @action(detail=False, methods=['post'], url_name="active", permission_classes=[IsAuthenticated])
+    def active(self, request):
+        serializers = ListingTopStatusSerializer(data=request.data)
+        serializers.is_valid(raise_exception=True)
+        
+        listing = serializers.validated_data['listing']
+        
+        send_telegram(listing)
+        
+        
+        return Response({"succes": True})
+        
 
 
     @action(detail=False, methods=['get'], url_path="search", permission_classes=[IsAuthenticated])
