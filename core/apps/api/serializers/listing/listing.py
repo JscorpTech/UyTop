@@ -225,7 +225,6 @@ class CreateListingSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Toplisting ID noto‘g‘ri")
 
 
-      
             
         listing = ListingModel.objects.create(**validated_data)
 
