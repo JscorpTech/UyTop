@@ -75,7 +75,6 @@ class BaseListingSerializer(serializers.ModelSerializer):
             "is_top",
             "toplisting",
             "top_start_date",
-            "top_end_date",
 
             # Holat
             "is_active",
@@ -187,7 +186,6 @@ class CreateListingSerializer(serializers.ModelSerializer):
             "is_top",
             "toplisting",
             "top_start_date",
-            "top_end_date",
 
             # Holat
             "is_active",
@@ -215,7 +213,6 @@ class CreateListingSerializer(serializers.ModelSerializer):
         amenity_ids = validated_data.pop("amenity", [])
 
         validated_data["user"] = user
-        top_end_date = validated_data.get("top_end_date")
         toplisting_id = validated_data.pop("toplisting", None)
         
         if toplisting_id:
@@ -226,10 +223,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Toplisting ID noto‘g‘ri")
 
 
-        if top_end_date is None:
-                validated_data["is_active"] = True
-        else:
-            validated_data["is_active"] = False
+      
             
         listing = ListingModel.objects.create(**validated_data)
 

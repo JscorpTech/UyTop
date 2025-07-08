@@ -8,9 +8,7 @@ from core.apps.api.enums.listing import (
     CurrencyChoice,
     ListingStatus
 )
-
-from django.utils import timezone
-from datetime import date
+from core.apps.api.enums.listing_status import check_and_update_top_status
 
 
 class ListingModel(AbstractBaseModel):
@@ -125,15 +123,10 @@ class ListingModel(AbstractBaseModel):
         blank=True, null=True
     )
     top_start_date = models.DateField(null=True, blank=True)
-    top_end_date = models.DateField(null=True, blank=True)
     
     
-    
-    def check_top_status(self):
-        today = date.today()
-        if self.is_top and self.top_end_date and self.top_end_date <= today:
-            self.is_top = False
-            self.save()
+    def check_status(self):
+        check_and_update_top_status(self)
     
 
     def __str__(self):
