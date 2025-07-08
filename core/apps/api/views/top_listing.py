@@ -31,14 +31,15 @@ class ListingIsTopView(APIView):
             listing.is_top = True
             listing.top_start_date = today
             listing.status = ListingStatus.APPROVED
-            
-            listing.save()
         else:
             listing.is_active = False
             listing.is_top = False
             listing.status = ListingStatus.REJECTED
-            
-            listing.save()
+
+        if listing.toplisting is None:
+            listing.is_top = False
+        
+        listing.save()
         
         serializer = BaseListingSerializer(listing)
         return Response(serializer.data, status=status.HTTP_200_OK)
