@@ -12,6 +12,8 @@ class ListingFilter(filters.FilterSet):
     building = filters.NumberFilter(field_name="building__id")
     amenity = filters.BaseInFilter(field_name="amenity__id", lookup_expr="in")
     region = filters.CharFilter(field_name="region", lookup_expr="iexact")
+    property = filters.CharFilter(field_name="property", lookup_expr="iexact")
+    property_subtype = filters.CharFilter(field_name="property_subtype", lookup_expr="iexact")
 
     price_start = filters.NumberFilter(field_name="price", lookup_expr="gte")
     price_end = filters.NumberFilter(field_name="price", lookup_expr="lte")
@@ -32,6 +34,8 @@ class ListingFilter(filters.FilterSet):
             "total_floors",
             "price_type",
             "building",
+            "property",
+            "property_subtype",
             "amenity",
             "is_top",
             "status",
