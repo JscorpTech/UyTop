@@ -53,12 +53,13 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         return context
 
     def get_queryset(self):
+        queryset = ListingModel.objects.filter(is_active=True)
+
         if self.action == "list":
-            queryset = ListingModel.objects.all()
             queryset = apply_sorting(queryset, self.request)
             return get_sorted_listings(queryset)
 
-        return apply_sorting(ListingModel.objects.all(), self.request)
+        return apply_sorting(queryset, self.request)
 
 
 
@@ -105,7 +106,7 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
             return Response({"detail": "Foydalanuvchi aniqlanmadi"})
         
         search_query = request.query_params.get("search")
-        queryset = ListingModel.objects.all()
+        queryset = ListingModel.objects.filter(is_active=True)
         
         if search_query:
             queryset = queryset.filter(
