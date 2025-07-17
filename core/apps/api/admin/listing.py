@@ -31,7 +31,7 @@ class ListingAdmin(ModelAdmin, TabbedTranslationAdmin):
     list_display_links = ("name",)
 
     def show_images(self, obj):
-        images = obj.images.all()[:3]  # Faqat 3 ta rasm ko‘rsatish uchun
+        images = obj.images.all()[:1]  # Faqat 3 ta rasm ko‘rsatish uchun
         imgs = ""
         for img in images:
             imgs += f'<img src="{img.image.url}" width="50" style="margin-right:5px;" />'
