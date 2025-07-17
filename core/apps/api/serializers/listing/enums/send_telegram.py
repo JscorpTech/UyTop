@@ -13,6 +13,11 @@ import os
 
 bot = telebot.TeleBot(token=settings.TELEGRAM_BOT_TOKEN)
 
+from io import BytesIO
+import os
+import requests
+
+
 
 def send_telegram(listing):
     map_url = f"https://yandex.com/maps/?ll={listing.longitude},{listing.latitude}&z=18"
@@ -22,21 +27,38 @@ def send_telegram(listing):
     media_group = []
 
     for img in images:
-        img_url = f"{settings.BASE_URL}{img.image.url}"
+        img_bytes = BytesIO()
         try:
-            response = requests.get(img_url)
-            if response.status_code == 200:
-                media_group.append(types.InputMediaPhoto(media=img_url))
+            # Local fayl borligini tekshirish
+            if os.path.exists(img.image.path):
+                with open(img.image.path, "rb") as f:
+                    img_bytes.write(f.read())
+                print(f"✅ Lokal rasm yuklandi: {img.image.path}")
             else:
-                print("❌ Noto‘g‘ri rasm URL:", img_url)
+                # Localda topilmasa URL dan yuklab olish
+                img_url = f"{settings.BASE_URL}{img.image.url}"
+                response = requests.get(img_url)
+                if response.status_code == 200:
+                    img_bytes.write(response.content)
+                    print(f"✅ URL orqali rasm yuklandi: {img_url}")
+                else:
+                    print(f"❌ Rasm URL topilmadi yoki 404: {img_url}")
+                    continue  # Bu rasmni o'tkazib yuboramiz
+
+            img_bytes.name = os.path.basename(img.image.name)
+            img_bytes.seek(0)  # Faylni boshiga qaytarish kerak
+            media_group.append(types.InputMediaPhoto(media=img_bytes))
+
         except Exception as e:
-            print("⚠️ Rasmni olishda xatolik:", e)
+            print(f"⚠️ Rasmni yuborishda xatolik: {e}")
 
     if media_group:
         try:
             bot.send_media_group(chat_id=settings.ADMIN, media=media_group)
         except Exception as e:
             print("❌ Rasmlar yuborishda xatolik:", e)
+    else:
+        print("⚠️ Hech qanday rasm topilmadi")
 
     try:
         caption_text = captio_text(listing, map_url)
@@ -61,6 +83,7 @@ def send_telegram(listing):
         )
     except Exception as e:
         print("❌ Tugmalarni yuborishda xatolik:", e)
+
 
 
 
