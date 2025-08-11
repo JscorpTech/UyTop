@@ -19,3 +19,6 @@ class DistrictModel(AbstractBaseModel):
         db_table = "District"
         verbose_name = _("DistrictModel")
         verbose_name_plural = _("DistrictModels")
+
+
+

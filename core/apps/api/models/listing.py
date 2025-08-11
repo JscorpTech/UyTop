@@ -126,6 +126,7 @@ class ListingModel(AbstractBaseModel):
     top_start_date = models.DateField(null=True, blank=True)
     
     
+    
     def check_status(self):
         check_and_update_top_status(self)
     
