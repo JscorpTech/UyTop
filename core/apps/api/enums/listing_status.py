@@ -1,6 +1,8 @@
 from datetime import date, timedelta
 from ..enums.listing import ListingStatus
-from core.apps.api.models.listing import ListingModel
+from ..models.listing import ListingModel
+
+
 
 def check_and_update_top_status(obj):
     today = date.today()
