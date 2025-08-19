@@ -2,6 +2,10 @@ from django_core.mixins import BaseViewSetMixin
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+from django.db.models import Q, F
 
 from core.apps.api.models import ListingModel
 from core.apps.api.serializers.listing import (
@@ -11,22 +15,10 @@ from core.apps.api.serializers.listing import (
     ListingTopStatusSerializer,
     send_telegram
 )
-
-
-# me
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import status
 from core.apps.api.enums.query import apply_sorting
-from django.db.models import Q
 from core.apps.api.views.top_listing import get_sorted_listings
-
-# filter
 from django_filters.rest_framework import DjangoFilterBackend
 from core.apps.api.filters.listing import ListingFilter
-
-
-
 
 
 @extend_schema(tags=["listing"])
@@ -61,53 +53,53 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
 
         return apply_sorting(queryset, self.request)
 
+    # ==========================================
+    # RETRIEVE /listing/<id>/
+    # ==========================================
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.views = F('views') + 1  # DB darajasida oshirish
+        instance.save(update_fields=['views'])
+        instance.refresh_from_db()  # F() ishlatilgandan keyin yangi qiymatni olish
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
-
+    # ==========================================
+    # ME /listing/me/
+    # ==========================================
     @action(detail=False, methods=["get"], url_path="me", permission_classes=[IsAuthenticated])
-    def me(self, request):        
+    def me(self, request):
         user = request.user
         if not user or not user.is_authenticated:
             return Response({"detail": "Foydalanuvchi aniqlanmadi"}, status=401)
 
-
         status_query = request.query_params.get("status")
-
-
         queryset = ListingModel.objects.filter(user=user)
-        
+
         if status_query:
             queryset = queryset.filter(status=status_query)
 
         queryset = apply_sorting(queryset, request)
         queryset = get_sorted_listings(queryset)
 
+        # Views har safar GET qilinsa oshadi
+        queryset.update(views=F('views') + 1)
+
         serializer = ListListingSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
-
-    @action(detail=False, methods=['post'], url_name="active", permission_classes=[IsAuthenticated])
-    def active(self, request):
-        serializers = ListingTopStatusSerializer(data=request.data)
-        serializers.is_valid(raise_exception=True)
-        
-        listing = serializers.validated_data['listing']
-        
-        send_telegram(listing)
-        
-        
-        return Response({"succes": True})
-        
-
-
+    # ==========================================
+    # SEARCH /listing/search/
+    # ==========================================
     @action(detail=False, methods=['get'], url_path="search", permission_classes=[IsAuthenticated])
     def search(self, request):
         user = request.user
         if not user or not user.is_authenticated:
             return Response({"detail": "Foydalanuvchi aniqlanmadi"})
-        
+
         search_query = request.query_params.get("search")
         queryset = ListingModel.objects.filter(is_active=True)
-        
+
         if search_query:
             queryset = queryset.filter(
                 Q(name__icontains=search_query) |
@@ -125,9 +117,28 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         queryset = apply_sorting(queryset, request)
         queryset = get_sorted_listings(queryset)
 
-        serializer = ListListingSerializer(queryset, many=True)
+        # Views har safar GET qilinsa oshadi
+        queryset.update(views=F('views') + 1)
+
+        serializer = ListListingSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
+    # ==========================================
+    # CREATE
+    # ==========================================
+    @action(detail=False, methods=['post'], url_name="active", permission_classes=[IsAuthenticated])
+    def active(self, request):
+        serializers = ListingTopStatusSerializer(data=request.data)
+        serializers.is_valid(raise_exception=True)
+
+        listing = serializers.validated_data['listing']
+        send_telegram(listing)
+
+        return Response({"success": True})
+
+    # ==========================================
+    # DELETE
+    # ==========================================
     @action(detail=False, methods=['delete'], url_path="me/delete/(?P<pk>[^/.]+)", permission_classes=[IsAuthenticated])
     def delete_my_listing(self, request, pk=None):
         user = request.user

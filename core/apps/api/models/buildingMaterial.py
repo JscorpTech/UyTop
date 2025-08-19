@@ -9,6 +9,7 @@ class BuildingmaterialModel(AbstractBaseModel):
     def __str__(self):
         return str(self.name)
 
+
     @classmethod
     def _create_fake(self):
         return self.objects.create(

@@ -12,6 +12,9 @@ from .enums.send_telegram import send_telegram
 
 
 class BaseListingSerializer(serializers.ModelSerializer):
+    saved_count = serializers.SerializerMethodField()
+    days_since_created = serializers.SerializerMethodField()
+    
     building = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     amenity = serializers.SerializerMethodField()
@@ -79,9 +82,19 @@ class BaseListingSerializer(serializers.ModelSerializer):
 
             # Holat
             "is_active",
-            "status"
+            "status",
+            
+            # count
+            "views",
+            "saved_count",
+            "days_since_created"
         ]
 
+    def get_saved_count(self, obj):
+        return obj.favorite_set.count()
+
+    def get_days_since_created(self, obj):
+        return obj.days_since_created()
 
 
     def get_is_favorited(self, obj):
@@ -191,6 +204,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
 
             # Holat
             "is_active",
+            "views"
         ]
 
 

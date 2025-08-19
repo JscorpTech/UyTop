@@ -9,6 +9,7 @@ from core.apps.api.enums.listing import (
     ListingStatus
 )
 from core.apps.api.enums.listing_status import check_and_update_top_status
+from django.utils.timezone import now
 
 
 class ListingModel(AbstractBaseModel):
@@ -124,8 +125,8 @@ class ListingModel(AbstractBaseModel):
         blank=True, null=True
     )
     top_start_date = models.DateField(null=True, blank=True)
-    
-    
+    views = models.PositiveIntegerField(default=0) 
+
     
     def check_status(self):
         check_and_update_top_status(self)
@@ -134,6 +135,10 @@ class ListingModel(AbstractBaseModel):
     def __str__(self):
         return str(self.name)
     
+    
+    
+    def days_since_created(self):
+        return (now().date() - self.created_at.date()).days
     
 
     @classmethod

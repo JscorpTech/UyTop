@@ -13,7 +13,8 @@ class FavoriteModel(AbstractBaseModel):
     listing = models.ForeignKey(
         "api.ListingModel",
         on_delete=models.CASCADE,
-        verbose_name=_("elon")
+        verbose_name=_("elon"),
+        related_name="favorite_set"
     )
 
     def __str__(self):
