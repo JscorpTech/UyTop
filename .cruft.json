@@ -1,28 +1,33 @@
 {
- "template": "https://github.com/JscorpTech/django",
- "commit": "d63186d213820576943fca495d181e828f2eef07",
- "checkout": null,
- "context": {
-  "cookiecutter": {
-   "cacheops": true,
-   "silk": true,
-   "storage": true,
-   "rosetta": true,
-   "channels": true,
-   "ckeditor": true,
-   "modeltranslation": true,
-   "parler": true,
-   "project_name": "UyTop",
-   "settings_module": "config.settings.local",
-   "runner": "wsgi",
-   "script": "entrypoint.sh",
-   "key": "key",
-   "port": "8022",
-   "phone": "998888112309",
-   "password": "2309",
-   "max_line_length": "120",
-   "project_slug": "uytop"
-  }
- },
- "directory": null
+  "template": "https://github.com/JscorpTech/django",
+  "commit": "b4fb16c7091639ecbdefbe5222d18c9030ccf9ab",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "UyTop",
+      "project_slug": "uytop",
+      "settings_module": "config.settings.local",
+      "runner": "wsgi",
+      "celery": "no",
+      "cache": "no",
+      "script": "entrypoint.sh",
+      "key": "key",
+      "port": "8022",
+      "phone": "998888112309",
+      "password": "2309",
+      "max_line_length": "120",
+      "silk": true,
+      "storage": true,
+      "channels": true,
+      "rosetta": true,
+      "cacheops": true,
+      "ckeditor": true,
+      "modeltranslation": true,
+      "parler": true,
+      "version": "0.1.1",
+      "_template": "https://github.com/JscorpTech/django",
+      "_commit": "b4fb16c7091639ecbdefbe5222d18c9030ccf9ab"
+    }
+  },
+  "directory": null
 }

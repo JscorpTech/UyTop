@@ -1,0 +1,44 @@
+networks:
+  uytop:
+    driver: bridge
+
+volumes:
+  pg_data: null
+  pycache: null
+
+services:
+  web:
+    networks:
+      - uytop
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.web
+    restart: always
+    container_name: test_web
+    environment:
+      - PYTHONPYCACHEPREFIX=/var/cache/pycache
+      - SCRIPT=${SCRIPT:-entrypoint.sh}
+    volumes:
+      - pycache:/var/cache/pycache
+    depends_on:
+      - db
+      - redis
+  db:
+    networks:
+      - uytop
+    image: postgres:16
+    restart: always
+    container_name: test_db
+    environment:
+      POSTGRES_DB: django
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '2309'
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  redis:
+    container_name: test_redis
+    networks:
+      - uytop
+    restart: always
+
+    image: redis
