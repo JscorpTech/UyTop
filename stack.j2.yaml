@@ -73,7 +73,6 @@ services:
       - .env
     environment:
       - PYTHONPYCACHEPREFIX=/var/cache/pycache
-      - SCRIPT=entrypint-server.sh
     networks:
       - uytop
     volumes:
