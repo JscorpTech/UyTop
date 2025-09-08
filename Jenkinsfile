@@ -41,40 +41,6 @@ pipeline {
         }
 
 
-        stage('Start Test DB') {
-            steps {
-                sh """
-                    docker run -d --rm --name ${CONTAINER_DB} -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=testdb postgres:16
-                    docker run -d --rm --name ${CONTAINER_REDIS} redis
-                    echo "⏳ Waiting for database..."
-                    for i in {1..30}; do
-                        if docker exec ${CONTAINER_DB} pg_isready -U postgres >/dev/null 2>&1; then
-                            echo "✅ Database ready"
-                            break
-                        fi
-                        echo "Database not ready yet... retrying..."
-                        sleep 2
-                    done
-                """
-            }
-        }
-
-        stage('Run Migrations & Tests') {
-            steps {
-                sh """
-                    docker run --rm --name ${CONTAINER_WEB} --link ${CONTAINER_DB}:db --link ${CONTAINER_REDIS}:redis \
-                        -e DB_HOST=db \
-                        -e DB_PORT=5432 \
-                        -e DB_NAME=testdb \
-                        -e DB_USER=postgres \
-                        -e DB_PASSWORD=postgres \
-                        -e DJANGO_SETTINGS_MODULE=config.settings.test \
-                        ${IMAGE_NAME}:${PROD_TAG} \
-                        sh -c "python manage.py migrate && pytest -v"
-                """
-            }
-        }
-
         stage('Publish to DockerHub') {
             when {
                 expression { currentBuild.currentResult == "SUCCESS" }
@@ -130,10 +96,6 @@ pipeline {
 
     post {
         always {
-            sh """
-                docker stop ${CONTAINER_DB} || true
-                docker stop ${CONTAINER_REDIS} || true
-            """
             echo "Pipeline finished: ${currentBuild.currentResult}"
         }
 

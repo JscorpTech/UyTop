@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from core.apps.api.models import ListingModel, ListingsubtypeModel
+from core.apps.api.models import ListingModel
 
 
 class ListingTest(TestCase):
