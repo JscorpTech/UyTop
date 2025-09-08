@@ -1,24 +1,24 @@
+from django.db.models import F, Q
 from django_core.mixins import BaseViewSetMixin
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import action
-from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Q, F
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
+from core.apps.api.enums.query import apply_sorting
+from core.apps.api.filters.listing import ListingFilter
 from core.apps.api.models import ListingModel
 from core.apps.api.serializers.listing import (
     CreateListingSerializer,
+    ListingTopStatusSerializer,
     ListListingSerializer,
     RetrieveListingSerializer,
-    ListingTopStatusSerializer,
-    send_telegram
+    send_telegram,
 )
-from core.apps.api.enums.query import apply_sorting
 from core.apps.api.views.top_listing import get_sorted_listings
-from django_filters.rest_framework import DjangoFilterBackend
-from core.apps.api.filters.listing import ListingFilter
 
 
 @extend_schema(tags=["listing"])
@@ -29,10 +29,8 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = ListingFilter
 
-    action_permission_classes = {
-        "create": [IsAuthenticated]
-    }
-    
+    action_permission_classes = {"create": [IsAuthenticated], "list": [AllowAny]}
+
     action_serializer_class = {
         "list": ListListingSerializer,
         "retrieve": RetrieveListingSerializer,
@@ -58,8 +56,8 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
     # ==========================================
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.views = F('views') + 1  # DB darajasida oshirish
-        instance.save(update_fields=['views'])
+        instance.views = F("views") + 1  # DB darajasida oshirish
+        instance.save(update_fields=["views"])
         instance.refresh_from_db()  # F() ishlatilgandan keyin yangi qiymatni olish
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
@@ -83,7 +81,7 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         queryset = get_sorted_listings(queryset)
 
         # Views har safar GET qilinsa oshadi
-        queryset.update(views=F('views') + 1)
+        queryset.update(views=F("views") + 1)
 
         serializer = ListListingSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
@@ -91,7 +89,7 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
     # ==========================================
     # SEARCH /listing/search/
     # ==========================================
-    @action(detail=False, methods=['get'], url_path="search", permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=["get"], url_path="search", permission_classes=[IsAuthenticated])
     def search(self, request):
         user = request.user
         if not user or not user.is_authenticated:
@@ -102,23 +100,23 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
 
         if search_query:
             queryset = queryset.filter(
-                Q(name__icontains=search_query) |
-                Q(property__icontains=search_query) |
-                Q(property_subtype__icontains=search_query) |
-                Q(address__icontains=search_query) |
-                Q(description__icontains=search_query) |
-                Q(phone__icontains=search_query) |
-                Q(room_count__icontains=search_query) |
-                Q(floor__icontains=search_query) |
-                Q(total_floors__icontains=search_query) |
-                Q(price__icontains=search_query)
+                Q(name__icontains=search_query)
+                | Q(property__icontains=search_query)
+                | Q(property_subtype__icontains=search_query)
+                | Q(address__icontains=search_query)
+                | Q(description__icontains=search_query)
+                | Q(phone__icontains=search_query)
+                | Q(room_count__icontains=search_query)
+                | Q(floor__icontains=search_query)
+                | Q(total_floors__icontains=search_query)
+                | Q(price__icontains=search_query)
             )
 
         queryset = apply_sorting(queryset, request)
         queryset = get_sorted_listings(queryset)
 
         # Views har safar GET qilinsa oshadi
-        queryset.update(views=F('views') + 1)
+        queryset.update(views=F("views") + 1)
 
         serializer = ListListingSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
@@ -126,12 +124,12 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
     # ==========================================
     # CREATE
     # ==========================================
-    @action(detail=False, methods=['post'], url_name="active", permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=["post"], url_name="active", permission_classes=[IsAuthenticated])
     def active(self, request):
         serializers = ListingTopStatusSerializer(data=request.data)
         serializers.is_valid(raise_exception=True)
 
-        listing = serializers.validated_data['listing']
+        listing = serializers.validated_data["listing"]
         send_telegram(listing)
 
         return Response({"success": True})
@@ -139,7 +137,7 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
     # ==========================================
     # DELETE
     # ==========================================
-    @action(detail=False, methods=['delete'], url_path="me/delete/(?P<pk>[^/.]+)", permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=["delete"], url_path="me/delete/(?P<pk>[^/.]+)", permission_classes=[IsAuthenticated])
     def delete_my_listing(self, request, pk=None):
         user = request.user
         try:
