@@ -106,8 +106,6 @@ services:
         max-file: "3"
   bot:
     image: uytop-bot:latest
-    env_file:
-      - .env
     networks:
       - uytop
     deploy:
