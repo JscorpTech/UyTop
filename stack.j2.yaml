@@ -104,6 +104,28 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+  bot:
+    image: uytop-bot:latest
+    env_file:
+      - .env
+    networks:
+      - uytop
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any 
+      update_config:
+        failure_action: rollback 
+        monitor: 30s
+        delay: 30s
+        max_failure_ratio: 0.2
+        parallelism: 1
+        order: start-first
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   nginx:
     image: jscorptech/nginx:v1
