@@ -6,6 +6,29 @@ from datetime import timedelta
 
 
 
+from datetime import timedelta
+from django.utils import timezone
+
+
+
+def expire_listings():
+    from core.apps.api.models.listing import ListingModel
+    
+    now = timezone.now()
+    
+    listings = ListingModel.objects.filter(is_active=True)
+    
+    for listing in listings:
+        expire_date = listing.created_at + timedelta(days=30)
+        if now >= expire_date:
+            listing.status = ListingStatus.EXPIRED
+            listing.is_active = False
+            listing.save(update_fields=["status", "is_active"])
+            print(f"Listing {listing.id} expired")
+
+
+
+
 
 def check_and_update_top_status(listing_id=None):
     from core.apps.api.models.listing import ListingModel
