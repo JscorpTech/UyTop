@@ -43,22 +43,20 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         return context
 
     def get_queryset(self):
-        queryset = ListingModel.objects.filter(is_active=True)
+        queryset = ListingModel.objects.all()
 
         if self.action == "list":
+            queryset = queryset.filter(is_active=True)
             queryset = apply_sorting(queryset, self.request)
             return get_sorted_listings(queryset)
 
         return apply_sorting(queryset, self.request)
 
-    # ==========================================
-    # RETRIEVE /listing/<id>/
-    # ==========================================
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.views = F("views") + 1  # DB darajasida oshirish
+        instance.views = F("views") + 1 
         instance.save(update_fields=["views"])
-        instance.refresh_from_db()  # F() ishlatilgandan keyin yangi qiymatni olish
+        instance.refresh_from_db()  
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
@@ -80,15 +78,11 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         queryset = apply_sorting(queryset, request)
         queryset = get_sorted_listings(queryset)
 
-        # Views har safar GET qilinsa oshadi
         queryset.update(views=F("views") + 1)
 
         serializer = ListListingSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
-    # ==========================================
-    # SEARCH /listing/search/
-    # ==========================================
     @action(detail=False, methods=["get"], url_path="search", permission_classes=[IsAuthenticated])
     def search(self, request):
         user = request.user
@@ -115,15 +109,11 @@ class ListingView(BaseViewSetMixin, ModelViewSet):
         queryset = apply_sorting(queryset, request)
         queryset = get_sorted_listings(queryset)
 
-        # Views har safar GET qilinsa oshadi
         queryset.update(views=F("views") + 1)
 
         serializer = ListListingSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
-    # ==========================================
-    # CREATE
-    # ==========================================
     @action(detail=False, methods=["post"], url_name="active", permission_classes=[IsAuthenticated])
     def active(self, request):
         serializers = ListingTopStatusSerializer(data=request.data)
