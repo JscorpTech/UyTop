@@ -241,7 +241,7 @@ class CreateListingSerializer(serializers.ModelSerializer):
 
             
         listing = ListingModel.objects.create(**validated_data)
-
+        
         if amenity_ids:
             amenities = AmenityModel.objects.filter(id__in=amenity_ids)
             listing.amenity.set(amenities)

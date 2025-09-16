@@ -1,24 +1,45 @@
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 from ..enums.listing import ListingStatus
 
+from django.utils import timezone
+from datetime import timedelta
 
 
-def check_and_update_top_status(obj):
-    today = date.today()
-    changed = False
 
-    if obj.is_top and obj.top_start_date and obj.listing.toplisting.day:
-        expire_top_date = obj.top_start_date + timedelta(days=obj.listing.toplisting.day)
-        if today >= expire_top_date:
-            obj.is_top = False
-            changed = True
-    from ..models.listing import ListingModel   
-    for obj in ListingModel.objects.filter(is_active=True):
-        if obj.created_at:
-            expire_active_date = obj.created_at + timedelta(days=30)
-            if today >= expire_active_date:
-                obj.status = ListingStatus.EXPIRED
-                obj.is_active = False
-                obj.save(update_fields=["status", "is_active"])
-    if changed:
-        obj.save()
+
+def check_and_update_top_status(listing_id=None):
+    from core.apps.api.models.listing import ListingModel
+
+    now = timezone.now()
+
+    if listing_id:
+        try:
+            listings = [ListingModel.objects.get(id=listing_id)]
+        except ListingModel.DoesNotExist:
+            print(f"Listing ID {listing_id} topilmadi!")
+            return
+    else:
+        listings = ListingModel.objects.filter(is_active=True)
+
+    for listing in listings:
+        if listing.is_top and listing.top_start_date and getattr(listing.listing, 'toplisting', None):
+            expire_top_date = listing.top_start_date + timedelta(seconds=5)
+            print("Listing top expire date:", expire_top_date)
+            if now >= expire_top_date:
+                listing.is_top = False
+                listing.save(update_fields=["is_top"])
+                print(f"Listing {listing.id} top expired!")
+
+
+        
+    if listing.is_active and listing.created_at:
+        expire_active_date = listing.created_at + timedelta(seconds=5)
+        print("created_at:", listing.created_at)
+        print("expres:", expire_active_date)
+        
+        if timezone.now() >= expire_active_date:
+            listing.status = ListingStatus.EXPIRED
+            listing.is_active = False
+            listing.save(update_fields=["status", "is_active"])
+        else:
+            print("Hali 10 sekund to‘lmadi, status o‘zgarmaydi.")

@@ -128,13 +128,9 @@ class ListingModel(AbstractBaseModel):
     views = models.PositiveIntegerField(default=0) 
 
     
-    def check_status(self):
-        check_and_update_top_status(self)
-    
 
     def __str__(self):
         return str(self.name)
-    
     
     
     def days_since_created(self):
