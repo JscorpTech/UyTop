@@ -28,6 +28,8 @@ class BaseListingSerializer(serializers.ModelSerializer):
         fields = [
             # Asosiy ma'lumotlar
             "id",
+            "created_at",
+            "updated_at",
             "user",
             "name",
             "dealtype",
