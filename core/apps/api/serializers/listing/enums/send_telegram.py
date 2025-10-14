@@ -35,7 +35,6 @@ def send_telegram(listing):
                     img_bytes.write(f.read())
                 print(f"✅ Lokal rasm yuklandi: {img.image.path}")
             else:
-                # Localda topilmasa URL dan yuklab olish
                 img_url = f"{settings.BASE_URL}{img.image.url}"
                 response = requests.get(img_url)
                 if response.status_code == 200:
@@ -43,10 +42,10 @@ def send_telegram(listing):
                     print(f"✅ URL orqali rasm yuklandi: {img_url}")
                 else:
                     print(f"❌ Rasm URL topilmadi yoki 404: {img_url}")
-                    continue  # Bu rasmni o'tkazib yuboramiz
+                    continue 
 
             img_bytes.name = os.path.basename(img.image.name)
-            img_bytes.seek(0)  # Faylni boshiga qaytarish kerak
+            img_bytes.seek(0) 
             media_group.append(types.InputMediaPhoto(media=img_bytes))
 
         except Exception as e:

@@ -1,27 +1,26 @@
 
-
 def captio_text(listing, map_url):
-    if listing.dealtype == 'sale':
-        dealtype = "Sotiladi"
-    else:
-        dealtype = "Ijaraga beriladi"
+    # Deal type
+    dealtype = "Sotiladi" if listing.dealtype == 'sale' else "Ijaraga beriladi"
 
-    # Ta'mir turi tarjimasi
-    if listing.repair_type == 'author':
-        repair_type = 'Mualliflik loyihasi'
-    elif listing.repair_type == 'euro':
-        repair_type = 'Evrotamir'
-    elif listing.repair_type == "medium":
-        repair_type = 'O‘rtacha'
-    elif listing.repair_type == "needs_repair":
-        repair_type = 'Ta’mir talab'
-    elif listing.repair_type == "black_finish":
-        repair_type = 'Qora suvoq'
-    else:
-        repair_type = 'Noma’lum'
+    # Ta'mir turi
+    repair_type_map = {
+        'author': 'Mualliflik loyihasi',
+        'euro': 'Evrotamir',
+        'medium': 'O‘rtacha',
+        'needs_repair': 'Ta’mir talab',
+        'black_finish': 'Qora suvoq'
+    }
+    repair_type = repair_type_map.get(listing.repair_type, 'Noma’lum')
+
+    # Top listing kunlari (agar mavjud bo'lsa)
+    toplisting_text = ""
+    if getattr(listing, 'toplisting', None):
+        toplisting_day = getattr(listing.toplisting, 'day', None)
+        if toplisting_day:
+            toplisting_text = f"\n⭐ <b>Top elon:</b> {toplisting_day} kun"
 
     caption = f"""🏠 <b>Yangi e’lon qo‘shildi!</b>
-
 📌 <b>Nomi:</b> {listing.name}
 💵 <b>Narxi:</b> {listing.price} {listing.currency} {"(Kelishiladi)" if listing.negotiable else ""}
 📃 <b>Holati:</b> {dealtype}
@@ -32,11 +31,12 @@ def captio_text(listing, map_url):
 📞 <b>Aloqa:</b> {listing.phone}
 📍 <b>Manzil:</b> {listing.address}
 🌐 <b>Tuman:</b> {listing.region}
-🗺 <a href="{map_url}">📍 Xaritada ko‘rish</a>
+🗺 <a href="{map_url}">📍 Xaritada ko‘rish</a>{toplisting_text}
 
 📝 <b>Tavsif:</b> {listing.description if listing.description else "Mavjud emas"}
 """
     return caption
+
 
 ADMIN_CONFIRM = \
 """
