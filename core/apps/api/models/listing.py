@@ -120,9 +120,10 @@ class ListingModel(AbstractBaseModel):
     )
     toplisting = models.ForeignKey(
         "api.ToplistingpriceModel",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         verbose_name=_("Top Elon kunlari"),
-        blank=True, null=True
+        blank=True, null=True,
+        related_name="listings",
     )
     top_start_date = models.DateField(null=True, blank=True)
     views = models.PositiveIntegerField(default=0) 

@@ -15,28 +15,20 @@ def expire_listing_task(listing_id):
         print(f"Listing {listing_id} does not exist.")
         
         
-        
-    
-    
     
 
 @shared_task
 def expire_top_listing(listing_id):
-    from django.utils import timezone
-    from datetime import timedelta
-
-    listing = ListingModel.objects.get(id=listing_id)
-    if listing.is_top and listing.top_start_date and getattr(listing.listing, 'toplisting', None):
-        now = timezone.now()
-        try:
-            top_days = int(listing.listing.toplisting.day)
-        except (ValueError, TypeError):
-            top_days = 0
-
-        expire_top_date = listing.top_start_date + timedelta(seconds=10)  
-        print(f"Listing {listing_id} expire_top_date:", expire_top_date)
-
-        if now >= expire_top_date:
-            listing.is_top = False
-            listing.save(update_fields=["is_top"])
-            print(f"Listing {listing_id} top expired!")
+    print(f"\n\n{listing_id}\n\n")
+    try:
+        listing=ListingModel.objects.get(id=listing_id)
+        listing.is_top = False
+        print(listing.toplisting)
+        listing.toplisting = None
+        listing.top_start_date=None
+        listing.save(update_fields=['is_top', 'toplisting', 'top_start_date'])
+        print(f"{listing_id} ozgardi")
+    except ListingModel.DoesNotExist:
+        print(listing_id)
+        print(f"{listing_id}. does not exist")                                                                                      
+        
