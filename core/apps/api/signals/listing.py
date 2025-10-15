@@ -20,7 +20,7 @@ def after_update_listing_top(sender, instance, created, **kwargs):
         if listing.is_top and listing.toplisting:
             toplisting_obj = instance.toplisting
             toplisting_days = int(toplisting_obj.day)
-            expire_time = instance.updated_at + timedelta(seconds=toplisting_days)
+            expire_time = instance.updated_at + timedelta(days=toplisting_days)
             expire_top_listing.apply_async(args=[instance.id], eta=expire_time)
             
             print(f"---------------------{instance.id}------------")
