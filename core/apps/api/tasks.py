@@ -30,5 +30,4 @@ def expire_top_listing(listing_id):
         print(f"{listing_id} ozgardi")
     except ListingModel.DoesNotExist:
         print(listing_id)
-        print(f"{listing_id}. does not exist")                                                                                      
         
